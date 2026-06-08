@@ -1,9 +1,11 @@
 import { motion } from "framer-motion";
 import { FaHeartbeat, FaHospital, FaUserFriends } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 function Hero() {
   return (
     <section className="hero">
+      {/* Left Side */}
       <motion.div
         className="heroContent"
         initial={{ opacity: 0, x: -80 }}
@@ -18,31 +20,43 @@ function Hero() {
         </h1>
 
         <p>
-          BloodLink connects patients, donors, hospitals and blood banks to find
-          fresh and frozen blood availability in emergency.
+          BloodLink connects patients, donors, hospitals and blood banks
+          to find fresh and frozen blood availability in emergencies.
         </p>
 
-        <div className="heroBtns">
-          <button className="primaryBtn">Find Blood Now</button>
-          <button className="outlineBtn">Register Donor</button>
-        </div>
+       <div className="heroBtns">
+  <Link to="/blood-search">
+    <button className="primaryBtn">
+      Find Blood Now
+    </button>
+  </Link>
+
+  <Link to="/register-donor">
+    <button className="outlineBtn">
+      Register Donor
+    </button>
+  </Link>
+</div>
       </motion.div>
 
+      {/* Right Side */}
       <motion.div
         className="heroBox"
-        initial={{ opacity: 0, scale: 0.7, rotate: -5 }}
-        animate={{ opacity: 1, scale: 1, rotate: 0 }}
+        initial={{ opacity: 0, scale: 0.7 }}
+        animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.8 }}
       >
         <FaHeartbeat />
+
         <h3>Live Blood Network</h3>
 
         <div className="miniInfo">
           <p>
-            <FaUserFriends /> Fresh Donors
+            <FaUserFriends /> Fresh Donors Available
           </p>
+
           <p>
-            <FaHospital /> Hospital Stock
+            <FaHospital /> Hospital Blood Stock
           </p>
         </div>
       </motion.div>

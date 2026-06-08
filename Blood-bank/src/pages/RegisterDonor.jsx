@@ -1,31 +1,67 @@
 import { motion } from "framer-motion";
+import { FaUser, FaPhone, FaCity, FaTint, FaCheckCircle } from "react-icons/fa";
 
 function RegisterDonor() {
   return (
-    <section className="donorSection">
+    <section className="donorPage">
       <motion.div
-        className="donorBox"
-        initial={{ opacity: 0, scale: 0.9 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.6 }}
+        className="donorWrapper"
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7 }}
       >
-        <h2>Register As A Blood Donor</h2>
-        <p>Fill your details and become part of life saving network.</p>
+        <div className="donorLeft">
+          <span className="badgeWhite">Become a Hero</span>
+          <h1>Donate Blood, Save Lives</h1>
+          <p>
+            Register as a verified donor and help people during emergency blood needs.
+          </p>
 
-        <form>
-          <input placeholder="Full Name" />
-          <input placeholder="Phone Number" />
-          <select>
-            <option>Select Blood Group</option>
-            <option>A+</option>
-            <option>B+</option>
-            <option>O+</option>
-            <option>O-</option>
-          </select>
-          <input placeholder="City" />
+          <div className="donorPoints">
+            <p><FaCheckCircle /> Help patients in your city</p>
+            <p><FaCheckCircle /> Get notified for nearby requests</p>
+            <p><FaCheckCircle /> Build your donation history</p>
+          </div>
+        </div>
 
-          <button type="button">Register Now</button>
-        </form>
+        <div className="donorFormCard">
+          <h2>Donor Registration</h2>
+          <p>Fill your basic details</p>
+
+          <form>
+            <div className="inputGroup">
+              <FaUser />
+              <input placeholder="Full Name" />
+            </div>
+
+            <div className="inputGroup">
+              <FaPhone />
+              <input placeholder="Phone Number" />
+            </div>
+
+            <div className="inputGroup">
+              <FaTint />
+              <select>
+                <option>Select Blood Group</option>
+                <option>A+</option>
+                <option>A-</option>
+                <option>B+</option>
+                <option>B-</option>
+                <option>O+</option>
+                <option>O-</option>
+                <option>AB+</option>
+                <option>AB-</option>
+              </select>
+            </div>
+
+            <div className="inputGroup">
+              <FaCity />
+              <input placeholder="City" />
+            </div>
+
+            <button type="button">Register Now</button>
+          </form>
+        </div>
       </motion.div>
     </section>
   );
