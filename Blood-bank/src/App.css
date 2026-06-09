@@ -545,19 +545,37 @@ footer {
 /* =========================
    RESPONSIVE DESIGN
 ========================= */
+
 @media (max-width: 950px) {
+
+  /* NAVBAR MOBILE */
   .navbar {
-    padding: 0 5%;
+    height: auto;
+    padding: 20px 5%;
+    flex-direction: column;
+    gap: 18px;
   }
 
   .navbar ul {
-    display: none;
+    display: flex;   /* Pehle none tha */
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 18px;
   }
 
+  .navbar li {
+    font-size: 16px;
+  }
+
+  .navbar button {
+    display: block;
+  }
+
+  /* HERO */
   .hero {
     grid-template-columns: 1fr;
     text-align: center;
-    padding: 130px 5% 70px;
+    padding: 220px 5% 70px; /* Navbar bada ho gaya */
   }
 
   .hero h1 {
@@ -573,16 +591,19 @@ footer {
     flex-wrap: wrap;
   }
 
+  /* STATS */
   .stats,
   .bloodGrid,
   .hospitalGrid {
     grid-template-columns: 1fr;
   }
 
+  /* SEARCH */
   .searchBox {
     grid-template-columns: 1fr;
   }
 
+  /* DONOR FORM */
   .donorBox form {
     grid-template-columns: 1fr;
   }
@@ -591,6 +612,7 @@ footer {
     grid-column: span 1;
   }
 
+  /* HEADINGS */
   .section h2,
   .donorBox h2,
   .emergency h2,
@@ -604,13 +626,26 @@ footer {
   }
 }
 
+/* EXTRA SMALL MOBILE */
+
 @media (max-width: 500px) {
-  .navbar button {
-    display: none;
-  }
 
   .logo {
     font-size: 24px;
+  }
+
+  .navbar ul {
+    gap: 12px;
+  }
+
+  .navbar li {
+    font-size: 14px;
+  }
+
+  .navbar button {
+    display: block;
+    padding: 10px 18px;
+    font-size: 14px;
   }
 
   .hero h1 {
@@ -623,6 +658,16 @@ footer {
 
   .heroBox {
     padding: 40px 25px;
+  }
+
+  .heroBtns {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .heroBtns button {
+    width: 100%;
+    max-width: 280px;
   }
 }
 
