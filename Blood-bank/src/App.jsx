@@ -13,17 +13,16 @@ function App() {
   return (
     <>
       <Navbar />
-
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/blood-search" element={<BloodSearch />} />
-        <Route path="/hospitals" element={<Hospitals />} />
-        <Route path="/register-donor" element={<RegisterDonor />} />
-      </Routes>
-
+      <main>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/blood-search" element={<BloodSearch />} />
+          <Route path="/hospitals" element={<Hospitals />} />
+          <Route path="/register-donor" element={<RegisterDonor />} />
+        </Routes>
+      </main>
       <Footer />
     </>
   );
 }
-
 export default App;

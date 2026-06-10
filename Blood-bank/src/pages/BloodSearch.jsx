@@ -1,63 +1,56 @@
 import { motion } from "framer-motion";
-import { FaSearch, FaTint } from "react-icons/fa";
+import { FaSearch, FaPhoneAlt, FaWhatsapp, FaMapMarkerAlt, FaTint, FaCheckCircle } from "react-icons/fa";
 
 function BloodSearch() {
-  const bloodGroups = [
-    { group: "A+", fresh: 42, frozen: 18 },
-    { group: "B+", fresh: 35, frozen: 12 },
-    { group: "O+", fresh: 58, frozen: 26 },
-    { group: "AB+", fresh: 14, frozen: 8 },
-    { group: "A-", fresh: 9, frozen: 4 },
-    { group: "O-", fresh: 7, frozen: 3 },
+  const donors = [
+    { name: "Rahul Sharma", group: "O+", area: "MP Nagar", city: "Bhopal", lastDonation: "4 months ago", status: "Available", verified: true },
+    { name: "Priya Verma", group: "A+", area: "Rohit Nagar", city: "Bhopal", lastDonation: "5 months ago", status: "Available", verified: true },
+    { name: "Amit Patel", group: "B-", area: "Saket Nagar", city: "Bhopal", lastDonation: "6 months ago", status: "Emergency Only", verified: false },
   ];
 
   return (
-    <section className="section">
-      <span className="badge">Blood Search</span>
-      <h2>Search Fresh & Frozen Blood</h2>
-
-      <div className="searchBox">
-        <select>
-          <option>Select Blood Group</option>
-          <option>A+</option>
-          <option>B+</option>
-          <option>O+</option>
-          <option>O-</option>
-        </select>
-
-        <select>
-          <option>Need Type</option>
-          <option>Fresh Blood</option>
-          <option>Frozen Blood</option>
-        </select>
-
-        <input placeholder="Enter city or hospital name" />
-
-        <button>
-          <FaSearch /> Search
-        </button>
+    <section className="pageShell">
+      <div className="pageHeader">
+        <span className="badge">Find Donor</span>
+        <h1>Search Blood Donors Near You</h1>
+        <p>Use filters to find nearby donors. Backend search will be connected later.</p>
       </div>
 
-      <div className="bloodGrid">
-        {bloodGroups.map((blood, index) => (
-          <motion.div
-            className="bloodCard"
-            key={index}
-            whileHover={{ scale: 1.04 }}
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
-          >
-            <FaTint />
-            <h3>{blood.group}</h3>
-            <p>Fresh Blood: {blood.fresh} Units</p>
-            <p>Frozen Blood: {blood.frozen} Units</p>
-            <button>View Details</button>
+      <motion.div className="searchPanel" initial={{ opacity: 0, y: 35 }} animate={{ opacity: 1, y: 0 }}>
+        <select>
+          <option>Select Blood Group</option>
+          <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
+          <option>O+</option><option>O-</option><option>AB+</option><option>AB-</option>
+        </select>
+        <input placeholder="City e.g. Bhopal" />
+        <input placeholder="Area e.g. MP Nagar" />
+        <button><FaSearch /> Search Donor</button>
+      </motion.div>
+
+      <div className="donorGrid">
+        {donors.map((donor, index) => (
+          <motion.div className="donorCard" key={index} initial={{ opacity: 0, y: 35 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.12 }} whileHover={{ y: -8 }}>
+            <div className="donorTop">
+              <div className="avatar">{donor.name.charAt(0)}</div>
+              <div>
+                <h3>{donor.name}</h3>
+                <p><FaMapMarkerAlt /> {donor.area}, {donor.city}</p>
+              </div>
+              <div className="groupBadge"><FaTint /> {donor.group}</div>
+            </div>
+            <div className="donorMeta">
+              <span>Last Donation: {donor.lastDonation}</span>
+              <span>Status: {donor.status}</span>
+              <span>{donor.verified ? <FaCheckCircle /> : "○"} {donor.verified ? "Verified" : "Not Verified"}</span>
+            </div>
+            <div className="donorActions">
+              <button><FaPhoneAlt /> Call</button>
+              <button className="whatsappBtn"><FaWhatsapp /> WhatsApp</button>
+            </div>
           </motion.div>
         ))}
       </div>
     </section>
   );
 }
-
 export default BloodSearch;
