@@ -18,20 +18,27 @@ function BloodSearch() {
   const [searched, setSearched] = useState(false);
   const [statusMsg, setStatusMsg] = useState("");
 
-  const getLastDonationText = (date) => {
-    if (!date) return "Not provided";
+ const getLastDonationText = (date) => {
+  if (!date) return "Not provided";
 
-    const lastDate = new Date(date);
-    const today = new Date();
+  const lastDate = new Date(date);
+  const today = new Date();
 
-    const diffTime = today - lastDate;
-    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-    const months = Math.floor(diffDays / 30);
+  if (isNaN(lastDate.getTime())) return "Not provided";
 
-    if (diffDays <= 0) return "Today";
-    if (months <= 0) return `${diffDays} days ago`;
-    return `${months} months ago`;
-  };
+  const diffTime = today - lastDate;
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+  if (diffDays < 0) return "Invalid future date";
+  if (diffDays === 0) return "Today";
+  if (diffDays < 30) return `${diffDays} days ago`;
+
+  const months = Math.floor(diffDays / 30);
+  if (months < 12) return `${months} months ago`;
+
+  const years = Math.floor(months / 12);
+  return `${years} years ago`;
+};
 
   const getCurrentLocation = () => {
     return new Promise((resolve, reject) => {
@@ -187,10 +194,10 @@ function BloodSearch() {
 
               <span>Status: {donor.emergencyAvailable}</span>
 
-              <span>
+              {/* <span>
                 {donor.isVerified ? <FaCheckCircle /> : "○"}{" "}
                 {donor.isVerified ? "Verified" : "Not Verified"}
-              </span>
+              </span> */}
             </div>
 
             <div className="donorActions">

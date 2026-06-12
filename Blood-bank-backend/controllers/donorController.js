@@ -3,6 +3,17 @@ const Donor = require("../models/Donor");
 // Donor Register
 exports.registerDonor = async (req, res) => {
   try {
+    const existingDonor = await Donor.findOne({
+      mobile: req.body.mobile,
+    });
+
+    if (existingDonor) {
+      return res.status(400).json({
+        success: false,
+        message: "You are already registered as a donor.",
+      });
+    }
+
     const donor = await Donor.create(req.body);
 
     res.status(201).json({

@@ -15,7 +15,7 @@ import {
 } from "react-icons/fa";
 
 function RegisterDonor() {
-  const [formData, setFormData] = useState({
+  const initialFormData = {
     fullName: "",
     mobile: "",
     whatsapp: "",
@@ -32,13 +32,18 @@ function RegisterDonor() {
       type: "Point",
       coordinates: [0, 0],
     },
-  });
+  };
 
+  const [formData, setFormData] = useState(initialFormData);
   const [loading, setLoading] = useState(false);
   const [locationStatus, setLocationStatus] = useState("");
+  const [formMessage, setFormMessage] = useState("");
+  const [messageType, setMessageType] = useState("");
 
   const handleChange = (e) => {
     const { name, value, type, checked, files } = e.target;
+
+    setFormMessage("");
 
     setFormData({
       ...formData,
@@ -53,7 +58,8 @@ function RegisterDonor() {
 
   const getCurrentLocation = () => {
     if (!navigator.geolocation) {
-      alert("Geolocation is not supported by your browser.");
+      setMessageType("error");
+      setFormMessage("Geolocation is not supported by your browser.");
       return;
     }
 
@@ -76,7 +82,8 @@ function RegisterDonor() {
       },
       () => {
         setLocationStatus("Location permission denied ❌");
-        alert("Please allow location permission for nearby donor search.");
+        setMessageType("error");
+        setFormMessage("Please allow location permission for nearby donor search.");
       }
     );
   };
@@ -85,50 +92,45 @@ function RegisterDonor() {
     e.preventDefault();
 
     if (!formData.consentToContact) {
-      alert("Please accept contact consent.");
+      setMessageType("error");
+      setFormMessage("Please accept contact consent.");
       return;
     }
 
     try {
       setLoading(true);
+      setFormMessage("");
 
       const res = await axios.post(
-        "http://localhost:5000/api/donors/register",
+        `${import.meta.env.VITE_API_URL}/api/donors/register`,
         formData
       );
 
-      alert(res.data.message);
+      setMessageType("success");
+      setFormMessage(res.data.message || "Donor registered successfully ✅");
 
-      setFormData({
-        fullName: "",
-        mobile: "",
-        whatsapp: "",
-        bloodGroup: "",
-        city: "",
-        area: "",
-        age: "",
-        gender: "",
-        lastDonationDate: "",
-        emergencyAvailable: "",
-        profilePhoto: "",
-        consentToContact: false,
-        location: {
-          type: "Point",
-          coordinates: [0, 0],
-        },
-      });
-
+      setFormData(initialFormData);
       setLocationStatus("");
-    }  catch (error) {
-  console.log("FULL ERROR:", error);
-  console.log("BACKEND ERROR:", error.response?.data);
+    } catch (error) {
+      const backendMessage =
+        error.response?.data?.message ||
+        error.response?.data?.error ||
+        "Donor registration failed";
 
-  alert(
-    error.response?.data?.error ||
-    error.response?.data?.message ||
-    "Donor registration failed"
-  );
-}
+      setMessageType("error");
+
+      if (
+        backendMessage.toLowerCase().includes("already") ||
+        backendMessage.toLowerCase().includes("duplicate") ||
+        backendMessage.toLowerCase().includes("e11000")
+      ) {
+        setFormMessage("⚠️ You are already registered as a donor.");
+      } else {
+        setFormMessage(backendMessage);
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -252,6 +254,12 @@ function RegisterDonor() {
             <button type="submit" disabled={loading}>
               {loading ? "Registering..." : "Register Donor"}
             </button>
+
+            {formMessage && (
+              <p className={`formMessage ${messageType}`}>
+                {formMessage}
+              </p>
+            )}
           </form>
         </div>
       </motion.div>

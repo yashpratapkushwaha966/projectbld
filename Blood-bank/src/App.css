@@ -971,6 +971,24 @@ button:hover {
   font-size: 16px;
 }
 
+.formMessage {
+  margin-top: 16px;
+  text-align: center;
+  font-weight: 900;
+  padding: 14px;
+  border-radius: 14px;
+}
+
+.formMessage.success {
+  background: #e9fff2;
+  color: #0f8a3b;
+}
+
+.formMessage.error {
+  background: #fff1f3;
+  color: #e7192d;
+}
+
 
 /* =========================================================
    14. HOSPITAL PAGE
