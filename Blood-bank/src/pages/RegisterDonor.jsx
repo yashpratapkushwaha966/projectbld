@@ -15,6 +15,8 @@ import {
 } from "react-icons/fa";
 
 function RegisterDonor() {
+  const API_URL = import.meta.env.VITE_API_URL;
+
   const initialFormData = {
     fullName: "",
     mobile: "",
@@ -67,14 +69,14 @@ function RegisterDonor() {
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        const latitude = position.coords.latitude;
-        const longitude = position.coords.longitude;
-
         setFormData((prev) => ({
           ...prev,
           location: {
             type: "Point",
-            coordinates: [longitude, latitude],
+            coordinates: [
+              position.coords.longitude,
+              position.coords.latitude,
+            ],
           },
         }));
 
@@ -84,6 +86,11 @@ function RegisterDonor() {
         setLocationStatus("Location permission denied ❌");
         setMessageType("error");
         setFormMessage("Please allow location permission for nearby donor search.");
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0,
       }
     );
   };
@@ -102,7 +109,7 @@ function RegisterDonor() {
       setFormMessage("");
 
       const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/donors/register`,
+        `${API_URL}/api/donors/register`,
         formData
       );
 
@@ -164,22 +171,44 @@ function RegisterDonor() {
             <div className="formGrid">
               <div className="inputGroup">
                 <FaUser />
-                <input name="fullName" value={formData.fullName} onChange={handleChange} placeholder="Full Name" required />
+                <input
+                  name="fullName"
+                  value={formData.fullName}
+                  onChange={handleChange}
+                  placeholder="Full Name"
+                  required
+                />
               </div>
 
               <div className="inputGroup">
                 <FaPhone />
-                <input name="mobile" value={formData.mobile} onChange={handleChange} placeholder="Mobile Number" required />
+                <input
+                  name="mobile"
+                  value={formData.mobile}
+                  onChange={handleChange}
+                  placeholder="Mobile Number"
+                  required
+                />
               </div>
 
               <div className="inputGroup">
                 <FaWhatsapp />
-                <input name="whatsapp" value={formData.whatsapp} onChange={handleChange} placeholder="WhatsApp Number" />
+                <input
+                  name="whatsapp"
+                  value={formData.whatsapp}
+                  onChange={handleChange}
+                  placeholder="WhatsApp Number"
+                />
               </div>
 
               <div className="inputGroup">
                 <FaTint />
-                <select name="bloodGroup" value={formData.bloodGroup} onChange={handleChange} required>
+                <select
+                  name="bloodGroup"
+                  value={formData.bloodGroup}
+                  onChange={handleChange}
+                  required
+                >
                   <option value="">Select Blood Group</option>
                   <option>A+</option>
                   <option>A-</option>
@@ -194,22 +223,46 @@ function RegisterDonor() {
 
               <div className="inputGroup">
                 <FaCity />
-                <input name="city" value={formData.city} onChange={handleChange} placeholder="City" required />
+                <input
+                  name="city"
+                  value={formData.city}
+                  onChange={handleChange}
+                  placeholder="City"
+                  required
+                />
               </div>
 
               <div className="inputGroup">
                 <FaMapMarkerAlt />
-                <input name="area" value={formData.area} onChange={handleChange} placeholder="Area / Locality" required />
+                <input
+                  name="area"
+                  value={formData.area}
+                  onChange={handleChange}
+                  placeholder="Area / Locality"
+                  required
+                />
               </div>
 
               <div className="inputGroup">
                 <FaUser />
-                <input type="number" name="age" value={formData.age} onChange={handleChange} placeholder="Age" required />
+                <input
+                  type="number"
+                  name="age"
+                  value={formData.age}
+                  onChange={handleChange}
+                  placeholder="Age"
+                  required
+                />
               </div>
 
               <div className="inputGroup">
                 <FaUser />
-                <select name="gender" value={formData.gender} onChange={handleChange} required>
+                <select
+                  name="gender"
+                  value={formData.gender}
+                  onChange={handleChange}
+                  required
+                >
                   <option value="">Gender</option>
                   <option>Male</option>
                   <option>Female</option>
@@ -219,12 +272,22 @@ function RegisterDonor() {
 
               <div className="inputGroup">
                 <FaCalendarAlt />
-                <input type="date" name="lastDonationDate" value={formData.lastDonationDate} onChange={handleChange} />
+                <input
+                  type="date"
+                  name="lastDonationDate"
+                  value={formData.lastDonationDate}
+                  onChange={handleChange}
+                />
               </div>
 
               <div className="inputGroup">
                 <FaCheckCircle />
-                <select name="emergencyAvailable" value={formData.emergencyAvailable} onChange={handleChange} required>
+                <select
+                  name="emergencyAvailable"
+                  value={formData.emergencyAvailable}
+                  onChange={handleChange}
+                  required
+                >
                   <option value="">Available for Emergency?</option>
                   <option>Yes</option>
                   <option>No</option>
@@ -234,10 +297,18 @@ function RegisterDonor() {
 
               <div className="inputGroup fullWidth">
                 <FaCamera />
-                <input type="file" name="profilePhoto" onChange={handleChange} />
+                <input
+                  type="file"
+                  name="profilePhoto"
+                  onChange={handleChange}
+                />
               </div>
 
-              <button type="button" className="locationBtn fullWidth" onClick={getCurrentLocation}>
+              <button
+                type="button"
+                className="locationBtn fullWidth"
+                onClick={getCurrentLocation}
+              >
                 <FaLocationArrow /> Use Current Location
               </button>
 
@@ -246,7 +317,12 @@ function RegisterDonor() {
               )}
 
               <label className="consent fullWidth">
-                <input type="checkbox" name="consentToContact" checked={formData.consentToContact} onChange={handleChange} />
+                <input
+                  type="checkbox"
+                  name="consentToContact"
+                  checked={formData.consentToContact}
+                  onChange={handleChange}
+                />
                 I agree to be contacted for blood donation requests.
               </label>
             </div>

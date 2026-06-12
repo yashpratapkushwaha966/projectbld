@@ -2,43 +2,41 @@ import { useState } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 import {
-  FaSearch,
   FaPhoneAlt,
   FaWhatsapp,
   FaMapMarkerAlt,
   FaTint,
-  FaCheckCircle,
   FaLocationArrow,
 } from "react-icons/fa";
 
 function BloodSearch() {
+  const API_URL = import.meta.env.VITE_API_URL;
+
   const [bloodGroup, setBloodGroup] = useState("");
   const [donors, setDonors] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searched, setSearched] = useState(false);
   const [statusMsg, setStatusMsg] = useState("");
 
- const getLastDonationText = (date) => {
-  if (!date) return "Not provided";
+  const getLastDonationText = (date) => {
+    if (!date) return "Not provided";
 
-  const lastDate = new Date(date);
-  const today = new Date();
+    const lastDate = new Date(date);
+    const today = new Date();
 
-  if (isNaN(lastDate.getTime())) return "Not provided";
+    if (isNaN(lastDate.getTime())) return "Not provided";
 
-  const diffTime = today - lastDate;
-  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    const diffDays = Math.floor((today - lastDate) / (1000 * 60 * 60 * 24));
 
-  if (diffDays < 0) return "Invalid future date";
-  if (diffDays === 0) return "Today";
-  if (diffDays < 30) return `${diffDays} days ago`;
+    if (diffDays < 0) return "Invalid future date";
+    if (diffDays === 0) return "Today";
+    if (diffDays < 30) return `${diffDays} days ago`;
 
-  const months = Math.floor(diffDays / 30);
-  if (months < 12) return `${months} months ago`;
+    const months = Math.floor(diffDays / 30);
+    if (months < 12) return `${months} months ago`;
 
-  const years = Math.floor(months / 12);
-  return `${years} years ago`;
-};
+    return `${Math.floor(months / 12)} years ago`;
+  };
 
   const getCurrentLocation = () => {
     return new Promise((resolve, reject) => {
@@ -85,7 +83,7 @@ function BloodSearch() {
       for (const radius of radiusList) {
         setStatusMsg(`Searching donors within ${radius / 1000} KM...`);
 
-        const res = await axios.get("http://localhost:5000/api/donors/nearby", {
+        const res = await axios.get(`${API_URL}/api/donors/nearby`, {
           params: {
             latitude: location.latitude,
             longitude: location.longitude,
@@ -130,7 +128,10 @@ function BloodSearch() {
         initial={{ opacity: 0, y: 35 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        <select value={bloodGroup} onChange={(e) => setBloodGroup(e.target.value)}>
+        <select
+          value={bloodGroup}
+          onChange={(e) => setBloodGroup(e.target.value)}
+        >
           <option value="">Select Blood Group</option>
           <option>A+</option>
           <option>A-</option>
@@ -143,12 +144,19 @@ function BloodSearch() {
         </select>
 
         <button onClick={searchDonors} disabled={loading}>
-          <FaLocationArrow /> {loading ? "Searching..." : "Use Location & Search"}
+          <FaLocationArrow />{" "}
+          {loading ? "Searching..." : "Use Location & Search"}
         </button>
       </motion.div>
 
       {statusMsg && (
-        <p style={{ textAlign: "center", marginBottom: "30px", fontWeight: "800" }}>
+        <p
+          style={{
+            textAlign: "center",
+            marginBottom: "30px",
+            fontWeight: "800",
+          }}
+        >
           {statusMsg}
         </p>
       )}
@@ -193,11 +201,6 @@ function BloodSearch() {
               </span>
 
               <span>Status: {donor.emergencyAvailable}</span>
-
-              {/* <span>
-                {donor.isVerified ? <FaCheckCircle /> : "○"}{" "}
-                {donor.isVerified ? "Verified" : "Not Verified"}
-              </span> */}
             </div>
 
             <div className="donorActions">
