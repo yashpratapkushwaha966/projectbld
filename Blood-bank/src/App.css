@@ -675,6 +675,26 @@ button:hover {
 }
 
 
+.locationBtn {
+  border: 2px dashed var(--red) !important;
+  background: var(--soft-red) !important;
+  color: var(--red) !important;
+  padding: 16px !important;
+  border-radius: 16px !important;
+  font-weight: 900 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.locationStatus {
+  text-align: left;
+  color: #10a34a;
+  font-weight: 800;
+}
+
+
 /* =========================================================
    12. DONOR SEARCH PAGE
    Info:
@@ -797,6 +817,17 @@ button:hover {
 
 .whatsappBtn {
   background: #25d366 !important;
+}
+
+.searchPanel {
+  max-width: 760px;
+  grid-template-columns: 1fr auto;
+}
+
+@media (max-width: 650px) {
+  .searchPanel {
+    grid-template-columns: 1fr;
+  }
 }
 
 

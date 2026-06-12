@@ -1,0 +1,124 @@
+const Donor = require("../models/Donor");
+
+// Donor Register
+exports.registerDonor = async (req, res) => {
+  try {
+    const donor = await Donor.create(req.body);
+
+    res.status(201).json({
+      success: true,
+      message: "Donor registered successfully",
+      donor,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Donor registration failed",
+      error: error.message,
+    });
+  }
+};
+
+// Get All Donors
+exports.getAllDonors = async (req, res) => {
+  try {
+    const donors = await Donor.find().sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      count: donors.length,
+      donors,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to get donors",
+      error: error.message,
+    });
+  }
+};
+
+// Normal Search: bloodGroup + city + area
+exports.searchDonors = async (req, res) => {
+  try {
+    let { bloodGroup, city, area } = req.query;
+
+    const query = {};
+
+    if (bloodGroup) {
+      bloodGroup = bloodGroup.trim().replace(" ", "+");
+      query.bloodGroup = bloodGroup;
+    }
+
+    if (city) {
+      query.city = new RegExp(city.trim(), "i");
+    }
+
+    if (area) {
+      query.area = new RegExp(area.trim(), "i");
+    }
+
+    const donors = await Donor.find(query).sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      count: donors.length,
+      donors,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Search failed",
+      error: error.message,
+    });
+  }
+};
+
+// Nearby Search: Rapido style location based search
+exports.getNearbyDonors = async (req, res) => {
+  try {
+    let { latitude, longitude, bloodGroup, radius } = req.query;
+
+    if (!latitude || !longitude || !bloodGroup) {
+      return res.status(400).json({
+        success: false,
+        message: "latitude, longitude and bloodGroup are required",
+      });
+    }
+
+    latitude = Number(latitude);
+    longitude = Number(longitude);
+    radius = Number(radius) || 5000; // default 5 KM
+
+    bloodGroup = bloodGroup.trim().replace(" ", "+");
+
+    const donors = await Donor.find({
+      bloodGroup,
+      consentToContact: true,
+      emergencyAvailable: { $in: ["Yes", "Emergency Only"] },
+      location: {
+        $near: {
+          $geometry: {
+            type: "Point",
+            coordinates: [longitude, latitude],
+          },
+          $maxDistance: radius,
+        },
+      },
+    });
+
+    res.status(200).json({
+      success: true,
+      radius,
+      radiusInKm: radius / 1000,
+      count: donors.length,
+      donors,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Nearby donor search failed",
+      error: error.message,
+    });
+  }
+};
