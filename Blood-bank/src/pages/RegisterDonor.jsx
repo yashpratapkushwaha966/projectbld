@@ -165,7 +165,7 @@ function RegisterDonor() {
 
         <div className="donorFormCard">
           <h2>Donor Registration</h2>
-          <p>Fill your basic details. Backend will save this data.</p>
+          <p>Fill your basic details.</p>
 
           <form onSubmit={handleSubmit}>
             <div className="formGrid">
@@ -295,14 +295,14 @@ function RegisterDonor() {
                 </select>
               </div>
 
-              <div className="inputGroup fullWidth">
+              {/* <div className="inputGroup fullWidth">
                 <FaCamera />
                 <input
                   type="file"
                   name="profilePhoto"
                   onChange={handleChange}
                 />
-              </div>
+              </div> */}
 
               <button
                 type="button"
