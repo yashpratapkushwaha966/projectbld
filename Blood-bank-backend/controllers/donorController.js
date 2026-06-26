@@ -49,43 +49,47 @@ exports.getAllDonors = async (req, res) => {
   }
 };
 
-// Normal Search: bloodGroup + city + area
+// Manual Search: state + city + bloodGroup
 exports.searchDonors = async (req, res) => {
   try {
-    let { bloodGroup, city, area } = req.query;
+    let { bloodGroup, state, city } = req.query;
 
-    const query = {};
+    const query = {
+      consentToContact: true,
+      emergencyAvailable: { $in: ["Yes", "Emergency Only"] },
+    };
 
     if (bloodGroup) {
       bloodGroup = bloodGroup.trim().replace(" ", "+");
       query.bloodGroup = bloodGroup;
     }
 
-    if (city) {
-      query.city = new RegExp(city.trim(), "i");
+    if (state) {
+      query.state = new RegExp(state.trim(), "i");
     }
 
-    if (area) {
-      query.area = new RegExp(area.trim(), "i");
+    if (city) {
+      query.city = new RegExp(city.trim(), "i");
     }
 
     const donors = await Donor.find(query).sort({ createdAt: -1 });
 
     res.status(200).json({
       success: true,
+      searchType: "manual",
       count: donors.length,
       donors,
     });
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: "Search failed",
+      message: "Manual donor search failed",
       error: error.message,
     });
   }
 };
 
-// Nearby Search: Rapido style location based search
+// Nearby Search: GPS + Radius Search
 exports.getNearbyDonors = async (req, res) => {
   try {
     let { latitude, longitude, bloodGroup, radius } = req.query;
@@ -99,7 +103,7 @@ exports.getNearbyDonors = async (req, res) => {
 
     latitude = Number(latitude);
     longitude = Number(longitude);
-    radius = Number(radius) || 5000; // default 5 KM
+    radius = Number(radius) || 5000;
 
     bloodGroup = bloodGroup.trim().replace(" ", "+");
 
@@ -120,6 +124,7 @@ exports.getNearbyDonors = async (req, res) => {
 
     res.status(200).json({
       success: true,
+      searchType: "nearby",
       radius,
       radiusInKm: radius / 1000,
       count: donors.length,

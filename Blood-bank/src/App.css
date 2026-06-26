@@ -354,6 +354,35 @@ button:hover {
 }
 
 
+/* purpose section */
+
+
+.purposeSection {
+  padding: 80px 8%;
+  text-align: center;
+  background: #fff;
+}
+
+.purposeSection h2 {
+  font-size: 42px;
+  color: #c1121f;
+  margin: 15px 0;
+}
+
+.purposeSection p {
+  max-width: 850px;
+  margin: 20px auto;
+  line-height: 1.8;
+  color: #555;
+  font-size: 18px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: auto;
+}
+
+
 /* =========================================================
    6. HERO ANIMATION ELEMENTS
    Info:
@@ -830,6 +859,81 @@ button:hover {
   }
 }
 
+.searchTabs {
+  max-width: 520px;
+  margin: 0 auto 25px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: #fff1f3;
+  padding: 8px;
+  border-radius: 18px;
+  gap: 8px;
+}
+
+.searchTabs button {
+  border: none;
+  background: transparent;
+  color: #e7192d;
+  padding: 14px;
+  border-radius: 14px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.searchTabs .activeTab {
+  background: #e7192d;
+  color: #fff;
+}
+
+.manualSearchPanel {
+  max-width: 1050px;
+  margin: 0 auto 40px;
+  background: white;
+  padding: 20px;
+  border-radius: 26px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr auto;
+  gap: 14px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+}
+
+.manualSearchPanel input,
+.manualSearchPanel select {
+  width: 100%;
+  padding: 16px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  outline: none;
+  font-size: 16px;
+}
+
+.manualSearchPanel button {
+  background: linear-gradient(135deg, var(--red), #ff4d60);
+  color: white;
+  border: none;
+  padding: 14px 24px;
+  border-radius: 16px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+@media (max-width: 900px) {
+  .manualSearchPanel {
+    grid-template-columns: 1fr;
+  }
+
+  .searchTabs {
+    grid-template-columns: 1fr;
+  }
+}
+
 
 /* =========================================================
    13. DONOR REGISTRATION PAGE
@@ -989,6 +1093,42 @@ button:hover {
   color: #e7192d;
 }
 
+
+.eligibilityBox {
+  padding: 14px;
+  border-radius: 14px;
+  font-weight: 900;
+  text-align: center;
+}
+
+.eligibilityBox.eligible {
+  background: #e9fff2;
+  color: #0f8a3b;
+}
+
+.eligibilityBox.notEligible {
+  background: #fff1f3;
+  color: #e7192d;
+}
+
+
+.fieldHint {
+  margin-top: 7px;
+  margin-left: 12px;
+  font-size: 12px;
+  color: #777;
+  font-weight: 600;
+}
+
+.formMessage.warning {
+  background: #fff8e1;
+  color: #b77900;
+}
+
+.inputGroup select:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
 
 /* =========================================================
    14. HOSPITAL PAGE

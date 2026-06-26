@@ -8,7 +8,9 @@ function Hero() {
       <motion.div className="heroContent" initial={{ opacity: 0, x: -70 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }}>
         <span className="badge">Emergency Blood Donor Network</span>
         <h1>Find Blood Donors <br /> Near You Fast.</h1>
-        <p>Project BLD helps patients connect with nearby blood donors during emergency needs. Search by blood group, city and area.</p>
+        <p>Project BLD helps people find nearby blood donors within 50 KM during emergency needs. Our purpose is only to connect patients and donors faster, without any charge.
+          <br></br>
+        If you are healthy and eligible, please register as a donor and help someone in need.</p>
 
         <div className="heroBtns">
           <Link to="/blood-search"><button className="primaryBtn">Find Donor Now</button></Link>
