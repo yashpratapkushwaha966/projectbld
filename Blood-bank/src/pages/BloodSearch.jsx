@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import indiaData from "../data/indiaData";
 import { motion } from "framer-motion";
 import {
   FaPhoneAlt,
@@ -10,35 +11,6 @@ import {
   FaSearch,
   FaCity,
 } from "react-icons/fa";
-
-const stateCityData = {
-  "Madhya Pradesh": [
-    "Bhopal",
-    "Indore",
-    "Jabalpur",
-    "Gwalior",
-    "Ujjain",
-    "Sagar",
-    "Rewa",
-    "Satna",
-    "Sehore",
-    "Vidisha",
-    "Raisen",
-    "Dewas",
-  ],
-  "Uttar Pradesh": [
-    "Lucknow",
-    "Kanpur",
-    "Prayagraj",
-    "Varanasi",
-    "Agra",
-    "Noida",
-    "Ghaziabad",
-  ],
-  Maharashtra: ["Mumbai", "Pune", "Nagpur", "Nashik", "Thane"],
-  Rajasthan: ["Jaipur", "Jodhpur", "Kota", "Ajmer", "Udaipur"],
-  Delhi: ["New Delhi", "North Delhi", "South Delhi", "East Delhi", "West Delhi"],
-};
 
 function BloodSearch() {
   const API_URL = import.meta.env.VITE_API_URL;
@@ -277,7 +249,7 @@ function BloodSearch() {
             onChange={handleManualChange}
           >
             <option value="">Select State</option>
-            {Object.keys(stateCityData).map((state) => (
+            {Object.keys(indiaData).map((state) => (
               <option key={state} value={state}>
                 {state}
               </option>
@@ -292,7 +264,7 @@ function BloodSearch() {
           >
             <option value="">Select City</option>
             {manualFilters.state &&
-              stateCityData[manualFilters.state]?.map((city) => (
+              indiaData[manualFilters.state]?.map((city) => (
                 <option key={city} value={city}>
                   {city}
                 </option>
@@ -322,7 +294,13 @@ function BloodSearch() {
       )}
 
       {statusMsg && (
-        <p style={{ textAlign: "center", marginBottom: "30px", fontWeight: "800" }}>
+        <p
+          style={{
+            textAlign: "center",
+            marginBottom: "30px",
+            fontWeight: "800",
+          }}
+        >
           {statusMsg}
         </p>
       )}
