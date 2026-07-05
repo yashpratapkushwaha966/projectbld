@@ -8,6 +8,8 @@ import Home from "./pages/Home/Home";
 import BloodSearch from "./pages/BloodSearch";
 import Hospitals from "./pages/Hospitals";
 import RegisterDonor from "./pages/RegisterDonor";
+import Login from "./pages/Auth/Login";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
@@ -16,7 +18,8 @@ function App() {
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/blood-search" element={<BloodSearch />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/blood-search" element={<ProtectedRoute><BloodSearch /></ProtectedRoute>} />
           <Route path="/hospitals" element={<Hospitals />} />
           <Route path="/register-donor" element={<RegisterDonor />} />
         </Routes>

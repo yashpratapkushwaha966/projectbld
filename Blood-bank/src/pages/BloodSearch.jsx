@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import indiaData from "../data/indiaData";
 import { motion } from "framer-motion";
+import { useAuth } from "../context/AuthContext";
 import {
   FaPhoneAlt,
   FaWhatsapp,
@@ -14,6 +15,11 @@ import {
 
 function BloodSearch() {
   const API_URL = import.meta.env.VITE_API_URL;
+  const { token } = useAuth();
+
+  const authConfig = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
 
   const [searchMode, setSearchMode] = useState("nearby");
   const [bloodGroup, setBloodGroup] = useState("");
@@ -113,6 +119,7 @@ function BloodSearch() {
         setStatusMsg(`Searching donors within ${radius / 1000} KM...`);
 
         const res = await axios.get(`${API_URL}/api/donors/nearby`, {
+          ...authConfig,
           params: {
             latitude: location.latitude,
             longitude: location.longitude,
@@ -154,6 +161,7 @@ function BloodSearch() {
       setStatusMsg("Searching donors by state and city...");
 
       const res = await axios.get(`${API_URL}/api/donors/search`, {
+        ...authConfig,
         params: manualFilters,
       });
 

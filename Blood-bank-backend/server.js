@@ -6,6 +6,7 @@ const connectDB = require("./config/db");
 
 const donorRoutes = require("./routes/donorRoutes");
 const requestRoutes = require("./routes/requestRoutes");
+const authRoutes = require("./routes/authRoutes");
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.get("/", (req, res) => {
   res.send("Project BLD Backend Running");
 });
 
+app.use("/api/auth", authRoutes);
 app.use("/api/donors", donorRoutes);
 app.use("/api/requests", requestRoutes);
 

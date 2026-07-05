@@ -1,1386 +1,1712 @@
-/* =========================================================
-   PROJECT BLD FRONTEND CSS
-   Purpose:
-   - Complete website styling
-   - Navbar, Hero, Cards, Donor Search, Donor Form, Footer
-   - Responsive design + animations
-========================================================= */
-
-
-/* =========================================================
-   1. GLOBAL RESET & VARIABLES
-   Info:
-   - Reset default browser spacing
-   - Define reusable theme colors
-========================================================= */
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Inter, Arial, sans-serif;
-}
+/* =========================================================================
+   PROJECT BLD — DESIGN SYSTEM
+   Palette:  deep midnight background + vital-red (blood) primary
+             + violet secondary + cyan accent
+   Type:     Space Grotesk (display) / Inter (body + UI)
+   Signature: animated "vital sign" ECG line used in hero + section dividers
+   ========================================================================= */
 
 :root {
-  --red: #e7192d;
-  --dark-red: #b90f20;
-  --soft-red: #fff1f3;
-  --black: #121212;
-  --text: #4a4a4a;
-  --white: #ffffff;
-  --border: #f2d8dc;
-  --shadow: 0 20px 55px rgba(20, 20, 20, 0.09);
+  /* ---- surfaces ---- */
+  --bg-0: #05070d;
+  --bg-1: #090d16;
+  --bg-2: #0d1220;
+  --bg-3: #121829;
+  --bg-light: #f7f8fb;
+  --bg-light-2: #eef0f6;
+
+  /* ---- glass ---- */
+  --glass-bg: rgba(255, 255, 255, 0.045);
+  --glass-bg-strong: rgba(255, 255, 255, 0.07);
+  --glass-border: rgba(255, 255, 255, 0.09);
+  --glass-border-strong: rgba(255, 255, 255, 0.16);
+
+  /* ---- brand ---- */
+  --red-500: #f43f5e;
+  --red-600: #e11d48;
+  --red-700: #be123c;
+  --violet-500: #7c5cff;
+  --violet-600: #6d43f0;
+  --cyan-400: #22d3ee;
+  --cyan-500: #06b6d4;
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+
+  --grad-primary: linear-gradient(135deg, var(--red-600) 0%, var(--violet-600) 100%);
+  --grad-primary-hover: linear-gradient(135deg, #ff3866 0%, #7c5cff 100%);
+  --grad-accent: linear-gradient(120deg, var(--cyan-500), var(--violet-500));
+  --grad-radial-glow: radial-gradient(circle at top, rgba(225, 29, 72, 0.28), transparent 60%);
+
+  /* ---- text ---- */
+  --text-0: #f8fafc;
+  --text-1: #cbd5e1;
+  --text-2: #94a3b8;
+  --text-3: #64748b;
+  --text-dark-0: #0b1120;
+  --text-dark-1: #384258;
+  --text-dark-2: #6b7488;
+
+  /* ---- radii / shadows ---- */
+  --r-sm: 10px;
+  --r-md: 16px;
+  --r-lg: 22px;
+  --r-xl: 28px;
+  --r-pill: 999px;
+
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 10px 30px rgba(5, 8, 15, 0.45);
+  --shadow-lg: 0 24px 60px rgba(5, 8, 15, 0.55);
+  --shadow-glow-red: 0 8px 30px rgba(225, 29, 72, 0.35);
+  --shadow-glow-violet: 0 8px 30px rgba(109, 67, 240, 0.3);
+
+  /* ---- type ---- */
+  --font-display: "Space Grotesk", "Inter", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, sans-serif;
+
+  /* ---- motion ---- */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 0.18s;
+  --dur-med: 0.32s;
+
+  --nav-h: 76px;
+  --container: 1200px;
 }
 
-html,
-body,
-#root {
-  width: 100%;
-  min-height: 100vh;
-  overflow-x: hidden;
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ==========================================================================
+   RESET / BASE
+   ========================================================================== */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: #ffffff;
-  color: var(--black);
-}
-
-a {
-  text-decoration: none;
+  background: var(--bg-0);
+  color: var(--text-1);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
 main {
-  min-height: 70vh;
+  position: relative;
+  isolation: isolate;
 }
 
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  color: var(--text-0);
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  font-weight: 600;
+}
 
-/* =========================================================
-   2. COMMON BUTTON STYLE
-   Info:
-   - Applies hover animation to all buttons
-========================================================= */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+}
 
 button {
+  font-family: var(--font-body);
   cursor: pointer;
-  transition: 0.3s ease;
+  border: none;
+  background: none;
+  color: inherit;
 }
 
-button:hover {
+input, select, textarea {
+  font-family: var(--font-body);
+  color: inherit;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+:focus-visible {
+  outline: 2px solid var(--cyan-400);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ---- custom scrollbar ---- */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-0);
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(var(--red-600), var(--violet-600));
+  border-radius: var(--r-pill);
+  border: 2px solid var(--bg-0);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(var(--red-500), var(--violet-500));
+}
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--red-600) var(--bg-0);
+}
+
+/* ---- shared layout helpers ---- */
+.container {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.badge, .badgeWhite {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: var(--r-pill);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  margin-bottom: 18px;
+  background: var(--glass-bg-strong);
+  border: 1px solid var(--glass-border-strong);
+  color: var(--cyan-400);
+  backdrop-filter: blur(8px);
+}
+
+.badge::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--red-500);
+  box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.6);
+  animation: pulseDot 1.8s ease-out infinite;
+}
+
+@keyframes pulseDot {
+  0% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.55); }
+  70% { box-shadow: 0 0 0 8px rgba(244, 63, 94, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0); }
+}
+
+.badgeWhite {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.28);
+  color: #fff;
+}
+
+/* ==========================================================================
+   BUTTONS
+   ========================================================================== */
+
+button {
+  transition: transform var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out), opacity var(--dur-fast) var(--ease-out);
+}
+
+.primaryBtn,
+.heroBtns button:not(.outlineBtn),
+.cta button,
+.emergencyBtns button:not(.whiteOutline),
+.donorFormCard form > button[type="submit"],
+.authCard form > button[type="submit"],
+.searchPanel button,
+.manualSearchPanel button,
+.locationBtn {
+  background: var(--grad-primary);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 14px 28px;
+  border-radius: var(--r-pill);
+  box-shadow: var(--shadow-glow-red);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+}
+
+.primaryBtn:hover,
+.heroBtns button:not(.outlineBtn):hover,
+.cta button:hover,
+.emergencyBtns button:not(.whiteOutline):hover,
+.donorFormCard form > button[type="submit"]:hover,
+.authCard form > button[type="submit"]:hover,
+.searchPanel button:hover,
+.manualSearchPanel button:hover,
+.locationBtn:hover {
+  background: var(--grad-primary-hover);
   transform: translateY(-3px);
-  box-shadow: 0 15px 35px rgba(231, 25, 45, 0.25);
+  box-shadow: 0 14px 34px rgba(225, 29, 72, 0.45);
 }
 
+button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none !important;
+}
 
-/* =========================================================
-   3. NAVBAR
-   Info:
-   - Fixed navbar
-   - Desktop links
-   - Emergency CTA button
-========================================================= */
+.outlineBtn,
+.whiteOutline,
+.secondaryBtn {
+  background: transparent;
+  border: 1.5px solid var(--glass-border-strong);
+  color: var(--text-0);
+  font-weight: 600;
+  padding: 13px 26px;
+  border-radius: var(--r-pill);
+}
+
+.outlineBtn:hover,
+.whiteOutline:hover,
+.secondaryBtn:hover {
+  border-color: var(--cyan-400);
+  color: var(--cyan-400);
+  transform: translateY(-3px);
+}
+
+.whiteOutline {
+  border-color: rgba(255, 255, 255, 0.5);
+  color: #fff;
+}
+.whiteOutline:hover {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: #fff;
+  color: #fff;
+}
+
+/* ==========================================================================
+   NAVBAR
+   ========================================================================== */
 
 .navbar {
-  width: 100%;
-  height: 86px;
-  padding: 0 7%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(14px);
-  position: fixed;
+  position: sticky;
   top: 0;
-  left: 0;
-  z-index: 999;
-  box-shadow: 0 8px 35px rgba(0, 0, 0, 0.08);
+  z-index: 200;
+  height: var(--nav-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 0 clamp(20px, 4vw, 56px);
+  background: rgba(9, 13, 22, 0.65);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border-bottom: 1px solid var(--glass-border);
 }
 
 .logo {
-  color: var(--red);
-  font-size: 26px;
-  font-weight: 900;
   display: flex;
   align-items: center;
   gap: 12px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--text-0);
+  white-space: nowrap;
+}
+
+.logo b {
+  color: transparent;
+  background: var(--grad-primary);
+  background-clip: text;
+  -webkit-background-clip: text;
 }
 
 .logo small {
   display: block;
-  font-size: 11px;
-  color: #777;
-  font-weight: 700;
-  letter-spacing: 0.5px;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.68rem;
+  color: var(--text-3);
+  letter-spacing: 0.03em;
 }
 
 .logoIcon {
-  width: 44px;
-  height: 44px;
-  border-radius: 15px;
-  background: var(--soft-red);
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
   display: grid;
   place-items: center;
+  border-radius: var(--r-md);
+  background: var(--grad-primary);
+  color: #fff;
+  font-size: 1.15rem;
+  box-shadow: var(--shadow-glow-red);
 }
 
 .desktopMenu {
   display: flex;
-  gap: 30px;
-  list-style: none;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  justify-content: center;
 }
 
 .desktopMenu a {
-  color: #222;
-  font-weight: 800;
+  padding: 10px 16px;
+  border-radius: var(--r-pill);
+  font-weight: 500;
+  font-size: 0.92rem;
+  color: var(--text-2);
+  transition: color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out);
 }
 
-.desktopMenu a.active,
 .desktopMenu a:hover {
-  color: var(--red);
+  color: var(--text-0);
+  background: var(--glass-bg);
 }
 
-.desktopBtn button,
-.primaryBtn,
-.searchPanel button,
-.requestCard button,
-.donorFormCard button,
-.hospitalBigCard button {
-  background: linear-gradient(135deg, var(--red), #ff4d60);
-  color: white;
-  border: none;
-  padding: 14px 24px;
-  border-radius: 16px;
-  font-weight: 900;
+.desktopMenu a.active {
+  color: var(--text-0);
+  background: var(--glass-bg-strong);
+  box-shadow: inset 0 0 0 1px var(--glass-border-strong);
 }
 
+.navLogout {
+  padding: 10px 16px;
+  border-radius: var(--r-pill);
+  font-weight: 500;
+  font-size: 0.92rem;
+  color: var(--text-2);
+}
+.navLogout:hover {
+  color: var(--red-500);
+  background: rgba(244, 63, 94, 0.1);
+}
 
-/* =========================================================
-   4. MOBILE SIDEBAR MENU
-   Info:
-   - Opens from left side on mobile
-   - Uses overlay background
-========================================================= */
+.desktopBtn button {
+  padding: 11px 22px;
+  font-size: 0.88rem;
+}
 
 .menuBtn {
   display: none;
-  background: var(--red);
-  color: white;
-  border: none;
-  padding: 13px 15px;
-  border-radius: 14px;
-  font-size: 20px;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--r-md);
+  background: var(--glass-bg-strong);
+  border: 1px solid var(--glass-border);
+  color: var(--text-0);
+  font-size: 1.1rem;
+  align-items: center;
+  justify-content: center;
 }
 
+/* ---- profile avatar + dropdown ---- */
+.profileMenu {
+  position: relative;
+}
+
+.avatarBtn {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--grad-accent);
+  color: #04111a;
+  font-size: 1.3rem;
+  box-shadow: var(--shadow-glow-violet);
+  border: 2px solid rgba(255, 255, 255, 0.15);
+}
+
+.avatarBtn:hover {
+  transform: translateY(-2px) scale(1.03);
+}
+
+.avatarInitials {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #04111a;
+}
+
+.avatarInitials.small {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--grad-accent);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.profileDropdown {
+  position: absolute;
+  top: calc(100% + 14px);
+  right: 0;
+  min-width: 240px;
+  background: var(--bg-3);
+  border: 1px solid var(--glass-border-strong);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-lg);
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  opacity: 0;
+  transform: translateY(-8px) scale(0.98);
+  pointer-events: none;
+  transition: opacity var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+  transform-origin: top right;
+}
+
+.profileDropdown.showDropdown {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.profileDropdownHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px 14px;
+  margin-bottom: 6px;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.profileDropdownHeader strong {
+  display: block;
+  color: var(--text-0);
+  font-size: 0.9rem;
+}
+.profileDropdownHeader small {
+  color: var(--text-3);
+  font-size: 0.76rem;
+}
+
+.profileDropdown a,
+.profileDropdown .dropdownItem,
+.profileDropdown .dropdownLogout {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: var(--r-sm);
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text-1);
+  text-align: left;
+  width: 100%;
+}
+
+.profileDropdown a:hover,
+.profileDropdown .dropdownItem:not(:disabled):hover {
+  background: var(--glass-bg-strong);
+  color: var(--text-0);
+}
+
+.profileDropdown .dropdownItem:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.profileDropdown .dropdownLogout {
+  color: var(--red-500);
+}
+.profileDropdown .dropdownLogout:hover {
+  background: rgba(244, 63, 94, 0.12);
+}
+
+/* ---- mobile sidebar ---- */
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.45);
+  background: rgba(5, 7, 13, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 250;
   opacity: 0;
-  visibility: hidden;
-  z-index: 1000;
-  transition: 0.3s;
+  pointer-events: none;
+  transition: opacity var(--dur-med) var(--ease-out);
 }
-
-.showOverlay {
+.overlay.showOverlay {
   opacity: 1;
-  visibility: visible;
+  pointer-events: auto;
 }
 
 .mobileSidebar {
   position: fixed;
   top: 0;
-  left: -330px;
-  width: 310px;
-  height: 100vh;
-  background: white;
-  z-index: 1001;
-  padding: 25px;
-  transition: 0.35s ease;
-  box-shadow: 20px 0 60px rgba(0, 0, 0, 0.18);
+  right: 0;
+  height: 100%;
+  width: min(320px, 84vw);
+  background: var(--bg-2);
+  border-left: 1px solid var(--glass-border-strong);
+  z-index: 300;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  gap: 28px;
+  transform: translateX(100%);
+  transition: transform var(--dur-med) var(--ease-out);
+  box-shadow: var(--shadow-lg);
 }
-
-.showSidebar {
-  left: 0;
+.mobileSidebar.showSidebar {
+  transform: translateX(0);
 }
 
 .sidebarTop {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
 }
 
 .sidebarLogo {
-  color: var(--red);
-  font-size: 22px;
-  font-weight: 900;
   display: flex;
-  gap: 10px;
   align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--text-0);
 }
 
 .closeBtn {
-  background: var(--soft-red);
-  color: var(--red);
-  border: none;
-  width: 42px;
-  height: 42px;
-  border-radius: 12px;
+  width: 38px;
+  height: 38px;
+  border-radius: var(--r-sm);
+  background: var(--glass-bg-strong);
+  display: grid;
+  place-items: center;
+  color: var(--text-0);
 }
 
 .sidebarLinks {
-  display: grid;
-  gap: 14px;
-  margin-top: 35px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
-
 .sidebarLinks a {
-  color: #111;
-  font-weight: 800;
-  padding: 15px;
-  border-radius: 14px;
+  padding: 14px 10px;
+  border-bottom: 1px solid var(--glass-border);
+  color: var(--text-1);
+  font-weight: 500;
 }
-
 .sidebarLinks a:hover {
-  background: var(--soft-red);
-  color: var(--red);
+  color: var(--cyan-400);
 }
 
 .sidebarBtn {
   width: 100%;
-  margin-top: 28px;
-  background: var(--red);
-  color: white;
-  border: none;
-  padding: 15px;
-  border-radius: 14px;
-  font-weight: 900;
+  padding: 14px;
+  border-radius: var(--r-pill);
+  font-weight: 700;
+  text-align: center;
+  background: var(--grad-primary);
+  color: #fff;
+  box-shadow: var(--shadow-glow-red);
 }
 
+.logoutSide {
+  background: rgba(244, 63, 94, 0.12);
+  color: var(--red-500);
+  box-shadow: none;
+  border: 1px solid rgba(244, 63, 94, 0.3);
+}
 
-/* =========================================================
-   5. HERO SECTION
-   Info:
-   - Main landing section
-   - Left text + right animated blood card
-========================================================= */
+@media (max-width: 980px) {
+  .desktopMenu,
+  .desktopBtn {
+    display: none;
+  }
+  .menuBtn {
+    display: grid;
+    place-items: center;
+  }
+}
+
+/* ==========================================================================
+   HERO
+   ========================================================================== */
 
 .hero {
-  min-height: 100vh;
-  padding: 145px 7% 80px;
+  position: relative;
   display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
+  grid-template-columns: 1.05fr 0.95fr;
   align-items: center;
-  gap: 50px;
-  background:
-    radial-gradient(circle at top right, rgba(231, 25, 45, 0.18), transparent 35%),
-    linear-gradient(135deg, #ffffff 0%, #fff5f6 100%);
+  gap: 40px;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: clamp(56px, 8vw, 110px) 24px clamp(70px, 9vw, 120px);
+  overflow: hidden;
 }
 
-.badge {
-  display: inline-block;
-  background: var(--soft-red);
-  color: var(--red);
-  padding: 10px 20px;
-  border-radius: 100px;
-  font-weight: 900;
-  margin-bottom: 20px;
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: -20% -10% auto -10%;
+  height: 620px;
+  background: var(--grad-radial-glow);
+  filter: blur(10px);
+  z-index: -1;
+  pointer-events: none;
 }
 
 .hero h1 {
-  font-size: clamp(42px, 6vw, 78px);
-  line-height: 1.05;
-  margin-bottom: 24px;
-  letter-spacing: -2px;
+  font-size: clamp(2.4rem, 5vw, 3.6rem);
+  margin-bottom: 20px;
 }
 
 .hero p {
-  font-size: 21px;
-  line-height: 1.65;
-  color: var(--text);
-  max-width: 650px;
+  color: var(--text-2);
+  font-size: 1.05rem;
+  max-width: 52ch;
+  margin-bottom: 28px;
 }
 
 .heroBtns {
   display: flex;
-  gap: 16px;
-  margin-top: 32px;
   flex-wrap: wrap;
-}
-
-.outlineBtn {
-  background: white;
-  color: var(--red);
-  border: 2px solid var(--red);
-  padding: 14px 24px;
-  border-radius: 16px;
-  font-weight: 900;
+  gap: 14px;
+  margin-bottom: 34px;
 }
 
 .trustRow {
   display: flex;
   flex-wrap: wrap;
-  gap: 14px;
-  margin-top: 30px;
+  gap: 22px;
 }
-
 .trustRow span {
-  background: white;
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow);
-  padding: 12px 16px;
-  border-radius: 100px;
-  font-weight: 800;
-  color: #333;
   display: flex;
-  gap: 8px;
   align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: var(--text-2);
+  font-weight: 500;
 }
-
 .trustRow svg {
-  color: var(--red);
+  color: var(--cyan-400);
 }
 
 .heroVisual {
-  min-height: 520px;
-  border-radius: 40px;
-  background:
-    linear-gradient(135deg, rgba(231, 25, 45, 0.95), rgba(255, 77, 96, 0.92)),
-    url("https://images.unsplash.com/photo-1615461066841-6116e61058f4?q=80&w=1200&auto=format&fit=crop");
-  background-size: cover;
-  background-position: center;
   position: relative;
+  height: 420px;
   display: grid;
   place-items: center;
-  box-shadow: 0 35px 90px rgba(231, 25, 45, 0.3);
-  overflow: hidden;
 }
-
-
-/* purpose section */
-
-
-.purposeSection {
-  padding: 80px 8%;
-  text-align: center;
-  background: #fff;
-}
-
-.purposeSection h2 {
-  font-size: 42px;
-  color: #c1121f;
-  margin: 15px 0;
-}
-
-.purposeSection p {
-  max-width: 850px;
-  margin: 20px auto;
-  line-height: 1.8;
-  color: #555;
-  font-size: 18px;
-}
-
-.container {
-  max-width: 1200px;
-  margin: auto;
-}
-
-
-/* =========================================================
-   6. HERO ANIMATION ELEMENTS
-   Info:
-   - Pulse circle
-   - Heartbeat animation
-   - Floating cards
-========================================================= */
 
 .pulseCircle {
-  position: absolute;
-  width: 220px;
-  height: 220px;
+  position: relative;
+  width: 300px;
+  height: 300px;
   border-radius: 50%;
-  border: 25px solid rgba(255, 255, 255, 0.18);
-  animation: pulse 2.2s infinite;
+  background: radial-gradient(circle at 30% 30%, rgba(225, 29, 72, 0.35), rgba(109, 67, 240, 0.12) 60%, transparent 75%);
+  border: 1px solid var(--glass-border-strong);
+}
+
+.pulseCircle::before,
+.pulseCircle::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(244, 63, 94, 0.35);
+  animation: ringPulse 2.6s var(--ease-out) infinite;
+}
+.pulseCircle::after {
+  animation-delay: 1.3s;
+}
+
+@keyframes ringPulse {
+  0% { transform: scale(0.85); opacity: 0.9; }
+  100% { transform: scale(1.5); opacity: 0; }
 }
 
 .heartIcon {
-  color: white;
-  font-size: 105px;
-  z-index: 2;
-  animation: heartbeat 1.4s infinite;
+  position: absolute;
+  font-size: 4.2rem;
+  color: var(--red-500);
+  filter: drop-shadow(0 0 24px rgba(244, 63, 94, 0.65));
+  animation: heartBeat 1.6s ease-in-out infinite;
+}
+
+@keyframes heartBeat {
+  0%, 100% { transform: scale(1); }
+  15% { transform: scale(1.14); }
+  30% { transform: scale(0.98); }
+  45% { transform: scale(1.08); }
+  60% { transform: scale(1); }
 }
 
 .liveCard {
   position: absolute;
-  background: white;
-  color: #111;
-  padding: 18px 22px;
-  border-radius: 22px;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.18);
-  display: grid;
-  gap: 6px;
-  animation: float 3s infinite ease-in-out;
+  background: var(--bg-3);
+  border: 1px solid var(--glass-border-strong);
+  border-radius: var(--r-md);
+  padding: 14px 18px;
+  box-shadow: var(--shadow-md);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 190px;
+  backdrop-filter: blur(10px);
 }
-
+.liveCard b {
+  color: var(--text-0);
+  font-size: 0.92rem;
+}
 .liveCard span {
-  color: #666;
-  font-weight: 700;
+  color: var(--text-3);
+  font-size: 0.78rem;
 }
-
 .liveCard.top {
-  top: 50px;
-  right: 35px;
+  top: 12px;
+  left: -10px;
+  animation: floatCard 5s ease-in-out infinite;
 }
-
 .liveCard.bottom {
-  bottom: 55px;
-  left: 35px;
-  animation-delay: 0.6s;
+  bottom: 18px;
+  right: -18px;
+  animation: floatCard 5s ease-in-out infinite 1s;
+}
+@keyframes floatCard {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
 }
 
-@keyframes pulse {
-  0% {
-    transform: scale(0.85);
-    opacity: 1;
+@media (max-width: 980px) {
+  .hero {
+    grid-template-columns: 1fr;
+    text-align: center;
+    padding-top: 48px;
   }
-
-  100% {
-    transform: scale(1.35);
-    opacity: 0;
-  }
+  .hero p { margin-inline: auto; }
+  .heroBtns, .trustRow { justify-content: center; }
+  .heroVisual { height: 320px; margin-top: 20px; }
+  .pulseCircle { width: 220px; height: 220px; }
+  .liveCard.top { left: 4px; }
+  .liveCard.bottom { right: 4px; }
 }
 
-@keyframes heartbeat {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-
-  20% {
-    transform: scale(1.15);
-  }
-
-  40% {
-    transform: scale(1);
-  }
-}
-
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-12px);
-  }
-}
-
-
-/* =========================================================
-   7. COMMON SECTION / PAGE STYLE
-   Info:
-   - Used in home sections and page layout
-========================================================= */
-
-.section,
-.pageShell {
-  width: 100%;
-  padding: 100px 7%;
-  text-align: center;
-}
-
-.pageShell {
-  padding-top: 140px;
-  min-height: 100vh;
-}
-
-.light,
-.lightPage {
-  background: var(--soft-red);
-}
-
-.section h2,
-.pageHeader h1 {
-  font-size: clamp(34px, 4vw, 54px);
-  margin-bottom: 18px;
-  letter-spacing: -1px;
-}
-
-.pageHeader {
-  max-width: 850px;
-  margin: 0 auto 45px;
-  text-align: center;
-}
-
-.pageHeader p {
-  color: var(--text);
-  font-size: 18px;
-  line-height: 1.6;
-}
-
-
-/* =========================================================
-   8. COMMON CARDS / GRIDS
-   Info:
-   - Cards used in How It Works, Hospitals, Requests, Stories
-========================================================= */
-
-.cardGrid,
-.requestGrid,
-.donorGrid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 25px;
-}
-
-.infoCard,
-.storyCard,
-.requestCard,
-.donorCard,
-.statCard {
-  background: white;
-  border: 1px solid var(--border);
-  border-radius: 28px;
-  padding: 32px;
-  box-shadow: var(--shadow);
-  transition: 0.3s ease;
-}
-
-.infoCard:hover,
-.storyCard:hover,
-.requestCard:hover,
-.donorCard:hover,
-.statCard:hover {
-  transform: translateY(-8px);
-}
-
-.cardIcon,
-.statIcon {
-  width: 70px;
-  height: 70px;
-  margin: 0 auto 20px;
-  display: grid;
-  place-items: center;
-  border-radius: 22px;
-  background: var(--soft-red);
-  color: var(--red);
-  font-size: 30px;
-}
-
-.infoCard h3,
-.storyCard h3,
-.requestCard h3 {
-  font-size: 24px;
-  margin-bottom: 12px;
-}
-
-.infoCard p,
-.storyCard p,
-.requestCard p {
-  color: var(--text);
-  line-height: 1.6;
-}
-
-
-/* =========================================================
-   9. STATS SECTION
-   Info:
-   - Shows MVP / Bhopal / 24x7 / safety cards
-========================================================= */
+/* ==========================================================================
+   STATS
+   ========================================================================== */
 
 .stats {
-  padding: 70px 7%;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 24px 90px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 22px;
+  gap: 20px;
 }
 
 .statCard {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-lg);
+  padding: 30px 24px;
   text-align: center;
+  backdrop-filter: blur(10px);
+  transition: border-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out);
+}
+.statCard:hover {
+  border-color: var(--glass-border-strong);
+  box-shadow: var(--shadow-md);
+}
+
+.statIcon {
+  width: 52px;
+  height: 52px;
+  margin: 0 auto 16px;
+  border-radius: var(--r-md);
+  display: grid;
+  place-items: center;
+  background: var(--grad-accent);
+  color: #04111a;
+  font-size: 1.3rem;
 }
 
 .statCard h2 {
-  color: var(--red);
-  font-size: 38px;
+  font-size: 1.9rem;
+  margin-bottom: 6px;
+}
+.statCard p {
+  color: var(--text-3);
+  font-size: 0.85rem;
+}
+
+@media (max-width: 860px) {
+  .stats { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 520px) {
+  .stats { grid-template-columns: 1fr; }
+}
+
+/* ==========================================================================
+   GENERIC SECTION + CARD GRID  (HowItWorks, HospitalPreview, SuccessStories)
+   ========================================================================== */
+
+.section {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 70px 24px;
+  text-align: center;
+}
+
+.section.light {
+  background: var(--bg-1);
+  max-width: 100%;
+  padding-inline: 0;
+}
+.section.light > * {
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: 24px;
+}
+
+.section h2 {
+  font-size: clamp(1.7rem, 3.2vw, 2.4rem);
+  margin-bottom: 46px;
+}
+
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+  text-align: left;
+}
+
+.infoCard, .storyCard {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-lg);
+  padding: 30px 26px;
+  backdrop-filter: blur(10px);
+  transition: transform var(--dur-med) var(--ease-out), border-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out);
+}
+.infoCard:hover, .storyCard:hover {
+  border-color: var(--glass-border-strong);
+  box-shadow: var(--shadow-md);
+}
+
+.cardIcon {
+  width: 50px;
+  height: 50px;
+  border-radius: var(--r-md);
+  display: grid;
+  place-items: center;
+  background: var(--grad-primary);
+  color: #fff;
+  font-size: 1.2rem;
+  margin-bottom: 18px;
+  box-shadow: var(--shadow-glow-red);
+}
+
+.infoCard h3 {
+  font-size: 1.15rem;
   margin-bottom: 8px;
 }
-
-.statCard p {
-  color: var(--text);
-  font-weight: 800;
+.infoCard p {
+  color: var(--text-2);
+  font-size: 0.92rem;
+}
+.infoCard small {
+  display: block;
+  margin-top: 10px;
+  color: var(--text-3);
+  font-size: 0.78rem;
 }
 
+.hospitalBigCard button {
+  margin-top: 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: var(--r-pill);
+  background: var(--glass-bg-strong);
+  border: 1px solid var(--glass-border-strong);
+  color: var(--text-0);
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+.hospitalBigCard button:hover {
+  border-color: var(--cyan-400);
+  color: var(--cyan-400);
+}
 
-/* =========================================================
-   10. EMERGENCY BANNER
-   Info:
-   - Strong red CTA section
-========================================================= */
+.storyCard {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.storyCard p {
+  color: var(--text-1);
+  font-size: 1rem;
+  font-style: italic;
+  line-height: 1.65;
+}
+.storyCard h3 {
+  font-size: 0.95rem;
+  color: var(--cyan-400);
+  font-family: var(--font-body);
+  font-weight: 600;
+}
+
+@media (max-width: 980px) {
+  .cardGrid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 620px) {
+  .cardGrid { grid-template-columns: 1fr; }
+}
+
+/* ==========================================================================
+   EMERGENCY BANNER
+   ========================================================================== */
 
 .emergency {
-  padding: 100px 7%;
+  position: relative;
+  margin: 0 auto;
+  padding: 70px 24px;
   text-align: center;
-  background:
-    linear-gradient(135deg, rgba(185, 15, 32, 0.95), rgba(231, 25, 45, 0.92)),
-    url("https://images.unsplash.com/photo-1581595220892-b0739db3ba8c?q=80&w=1600&auto=format&fit=crop");
-  background-size: cover;
-  background-position: center;
-  color: white;
+  background: linear-gradient(135deg, var(--red-700) 0%, var(--violet-600) 100%);
+  overflow: hidden;
 }
-
+.emergency::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.14), transparent 55%);
+}
+.emergency > div {
+  position: relative;
+  max-width: 640px;
+  margin: 0 auto;
+}
 .emergency span {
-  font-weight: 900;
-  background: rgba(255, 255, 255, 0.16);
-  padding: 10px 18px;
-  border-radius: 100px;
+  display: inline-block;
+  padding: 7px 16px;
+  border-radius: var(--r-pill);
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 18px;
 }
-
 .emergency h2 {
-  font-size: clamp(36px, 5vw, 60px);
-  margin: 22px 0 14px;
+  color: #fff;
+  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+  margin-bottom: 14px;
 }
-
 .emergency p {
-  font-size: 20px;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 30px;
 }
-
 .emergencyBtns {
-  margin-top: 28px;
   display: flex;
   justify-content: center;
-  gap: 16px;
+  gap: 14px;
   flex-wrap: wrap;
 }
-
-.emergency button {
-  border: none;
-  background: white;
-  color: var(--red);
-  padding: 15px 28px;
-  border-radius: 16px;
-  font-weight: 900;
+.emergencyBtns button:not(.whiteOutline) {
+  background: #fff;
+  color: var(--red-700);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+.emergencyBtns button:not(.whiteOutline):hover {
+  background: #fff;
+  transform: translateY(-3px);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.3);
 }
 
-.whiteOutline {
-  background: transparent !important;
-  color: white !important;
-  border: 2px solid white !important;
-}
+/* ==========================================================================
+   RECENT REQUESTS
+   ========================================================================== */
 
-
-/* =========================================================
-   11. RECENT BLOOD REQUEST CARDS
-   Info:
-   - Shows emergency request examples
-========================================================= */
-
-.bloodDrop,
-.groupBadge {
-  background: var(--soft-red);
-  color: var(--red);
-  width: fit-content;
-  padding: 10px 14px;
-  border-radius: 100px;
-  font-weight: 900;
-  display: flex;
-  gap: 8px;
-  align-items: center;
+.requestGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+  text-align: left;
 }
 
 .requestCard {
-  text-align: left;
+  background: var(--bg-2);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-lg);
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: transform var(--dur-med) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+}
+.requestCard:hover {
+  border-color: var(--red-600);
+  box-shadow: var(--shadow-glow-red);
+}
+
+.bloodDrop {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-start;
+  padding: 6px 14px;
+  border-radius: var(--r-pill);
+  background: rgba(225, 29, 72, 0.14);
+  color: var(--red-500);
+  font-weight: 700;
+  font-size: 0.85rem;
+  margin-bottom: 4px;
 }
 
 .requestCard h3 {
-  margin-top: 18px;
+  font-size: 1.05rem;
 }
-
 .requestCard p {
   display: flex;
-  gap: 8px;
   align-items: center;
+  gap: 8px;
+  color: var(--text-2);
+  font-size: 0.86rem;
 }
 
 .requestCard button {
-  margin-top: 18px;
+  margin-top: 12px;
+  padding: 11px 18px;
+  border-radius: var(--r-pill);
+  background: var(--glass-bg-strong);
+  border: 1px solid var(--glass-border-strong);
+  color: var(--text-0);
+  font-weight: 600;
+  font-size: 0.85rem;
+  align-self: flex-start;
+}
+.requestCard button:hover {
+  background: var(--grad-primary);
+  border-color: transparent;
 }
 
+@media (max-width: 980px) {
+  .requestGrid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 620px) {
+  .requestGrid { grid-template-columns: 1fr; }
+}
 
-.locationBtn {
-  border: 2px dashed var(--red) !important;
-  background: var(--soft-red) !important;
-  color: var(--red) !important;
-  padding: 16px !important;
-  border-radius: 16px !important;
-  font-weight: 900 !important;
+/* ==========================================================================
+   CTA
+   ========================================================================== */
+
+.cta {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 80px 24px;
+  text-align: center;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-xl);
+  margin-block: 40px 90px;
+}
+.cta h2 {
+  font-size: clamp(1.7rem, 3.2vw, 2.4rem);
+  margin-bottom: 14px;
+}
+.cta p {
+  color: var(--text-2);
+  margin-bottom: 30px;
+}
+
+/* ==========================================================================
+   FOOTER
+   ========================================================================== */
+
+.footer {
+  background: var(--bg-1);
+  border-top: 1px solid var(--glass-border);
+  padding: 60px 24px 26px;
+}
+
+.footerGrid {
+  max-width: var(--container);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: 40px;
+  padding-bottom: 40px;
+}
+
+.footerGrid h3 {
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 10px;
+  font-size: 1.05rem;
+  margin-bottom: 14px;
 }
-
-.locationStatus {
-  text-align: left;
-  color: #10a34a;
-  font-weight: 800;
+.footerGrid h4 {
+  font-size: 0.9rem;
+  color: var(--text-0);
+  margin-bottom: 16px;
 }
-
-
-/* =========================================================
-   12. DONOR SEARCH PAGE
-   Info:
-   - Search filters
-   - Donor cards
-========================================================= */
-
-.searchPanel {
-  max-width: 1180px;
-  margin: 0 auto 40px;
-  background: white;
-  padding: 20px;
-  border-radius: 26px;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr auto;
-  gap: 14px;
-  box-shadow: var(--shadow);
-  border: 1px solid var(--border);
-}
-
-.searchPanel input,
-.searchPanel select,
-.inputGroup input,
-.inputGroup select {
-  width: 100%;
-  padding: 16px;
-  border-radius: 16px;
-  border: 1px solid var(--border);
-  outline: none;
-  font-size: 16px;
-}
-
-.searchPanel button {
+.footerGrid p {
+  color: var(--text-3);
+  font-size: 0.88rem;
   display: flex;
+  align-items: center;
   gap: 8px;
-  align-items: center;
-  justify-content: center;
+  margin-bottom: 8px;
+}
+.footerGrid a {
+  display: block;
+  color: var(--text-2);
+  font-size: 0.88rem;
+  margin-bottom: 12px;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.footerGrid a:hover {
+  color: var(--cyan-400);
 }
 
-.donorGrid {
-  max-width: 1180px;
-  margin: auto;
+.footerBottom {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding-top: 24px;
+  border-top: 1px solid var(--glass-border);
+  text-align: center;
+  color: var(--text-3);
+  font-size: 0.8rem;
 }
 
-.donorCard {
-  text-align: left;
+@media (max-width: 760px) {
+  .footerGrid { grid-template-columns: 1fr; gap: 30px; }
 }
 
-.donorTop {
-  display: flex;
-  gap: 14px;
-  align-items: center;
-  position: relative;
+/* ==========================================================================
+   PAGE SHELL (Hospitals, BloodSearch header)
+   ========================================================================== */
+
+.pageShell {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 60px 24px 100px;
 }
 
-.avatar {
-  width: 58px;
-  height: 58px;
-  background: var(--red);
-  color: white;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  font-size: 22px;
-  font-weight: 900;
+.pageHeader {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto 46px;
+}
+.pageHeader h1 {
+  font-size: clamp(1.9rem, 4vw, 2.6rem);
+  margin-bottom: 14px;
+}
+.pageHeader p {
+  color: var(--text-2);
 }
 
-.donorTop h3 {
-  font-size: 22px;
+.lightPage {
+  color: var(--text-1);
 }
 
-.donorTop p {
-  color: var(--text);
-  display: flex;
-  gap: 7px;
-  align-items: center;
-}
-
-.groupBadge {
-  position: absolute;
-  right: 0;
-  top: 0;
-}
-
-.donorMeta {
-  display: grid;
-  gap: 10px;
-  margin: 24px 0;
-}
-
-.donorMeta span {
-  background: #fafafa;
-  padding: 11px 13px;
-  border-radius: 12px;
-  color: #444;
-  font-weight: 700;
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-
-.donorMeta svg {
-  color: #10a34a;
-}
-
-.donorActions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-
-.donorActions button {
-  border: none;
-  padding: 13px;
-  border-radius: 14px;
-  font-weight: 900;
-  background: var(--red);
-  color: white;
-}
-
-.whatsappBtn {
-  background: #25d366 !important;
-}
-
-.searchPanel {
-  max-width: 760px;
-  grid-template-columns: 1fr auto;
-}
-
-@media (max-width: 650px) {
-  .searchPanel {
-    grid-template-columns: 1fr;
-  }
-}
-
-.searchTabs {
-  max-width: 520px;
-  margin: 0 auto 25px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  background: #fff1f3;
-  padding: 8px;
-  border-radius: 18px;
-  gap: 8px;
-}
-
-.searchTabs button {
-  border: none;
-  background: transparent;
-  color: #e7192d;
-  padding: 14px;
-  border-radius: 14px;
-  font-weight: 900;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-}
-
-.searchTabs .activeTab {
-  background: #e7192d;
-  color: #fff;
-}
-
-.manualSearchPanel {
-  max-width: 1050px;
-  margin: 0 auto 40px;
-  background: white;
-  padding: 20px;
-  border-radius: 26px;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr auto;
-  gap: 14px;
-  box-shadow: var(--shadow);
-  border: 1px solid var(--border);
-}
-
-.manualSearchPanel input,
-.manualSearchPanel select {
-  width: 100%;
-  padding: 16px;
-  border-radius: 16px;
-  border: 1px solid var(--border);
-  outline: none;
-  font-size: 16px;
-}
-
-.manualSearchPanel button {
-  background: linear-gradient(135deg, var(--red), #ff4d60);
-  color: white;
-  border: none;
-  padding: 14px 24px;
-  border-radius: 16px;
-  font-weight: 900;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-}
-
-@media (max-width: 900px) {
-  .manualSearchPanel {
-    grid-template-columns: 1fr;
-  }
-
-  .searchTabs {
-    grid-template-columns: 1fr;
-  }
-}
-
-
-/* =========================================================
-   13. DONOR REGISTRATION PAGE
-   Info:
-   - Left visual panel
-   - Right registration form
-========================================================= */
-
-.donorPage {
-  width: 100%;
-  min-height: 100vh;
-  padding: 140px 7% 90px;
-  background:
-    radial-gradient(circle at top right, rgba(231, 25, 45, 0.15), transparent 30%),
-    linear-gradient(135deg, #fff5f6, #ffffff);
-}
-
-.donorWrapper {
-  max-width: 1250px;
-  margin: auto;
-  display: grid;
-  grid-template-columns: 0.85fr 1.15fr;
-  gap: 38px;
-  align-items: stretch;
-}
-
-.donorLeft {
-  padding: 48px;
-  border-radius: 36px;
-  background:
-    linear-gradient(135deg, rgba(231, 25, 45, 0.92), rgba(185, 15, 32, 0.93)),
-    url("https://images.unsplash.com/photo-1579154204601-01588f351e67?q=80&w=1200&auto=format&fit=crop");
-  background-size: cover;
-  background-position: center;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  box-shadow: 0 35px 90px rgba(231, 25, 45, 0.25);
-}
-
-.badgeWhite {
-  width: fit-content;
-  background: white;
-  color: var(--red);
-  padding: 10px 20px;
-  border-radius: 100px;
-  font-weight: 900;
-  margin-bottom: 24px;
-}
-
-.donorLeft h1 {
-  font-size: clamp(38px, 4vw, 58px);
-  line-height: 1.05;
-  margin-bottom: 20px;
-}
-
-.donorLeft p {
-  font-size: 18px;
-  line-height: 1.65;
-}
-
-.donorPoints {
-  margin-top: 28px;
-}
-
-.donorPoints p {
-  display: flex;
-  gap: 12px;
-  margin: 13px 0;
-  font-weight: 800;
-}
-
-.donorFormCard {
-  background: white;
-  padding: 42px;
-  border-radius: 34px;
-  box-shadow: var(--shadow);
-  border: 1px solid var(--border);
-}
-
-.donorFormCard h2 {
-  font-size: 36px;
-}
-
-.donorFormCard > p {
-  color: var(--text);
-  margin: 10px 0 28px;
-}
-
-.formGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 15px;
-}
+/* ==========================================================================
+   FORM PRIMITIVES  (inputGroup, selects, formMessage, eligibility)
+   ========================================================================== */
 
 .inputGroup {
   display: flex;
   align-items: center;
-  gap: 10px;
-  background: var(--soft-red);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 0 14px;
+  gap: 12px;
+  background: var(--bg-2);
+  border: 1.5px solid var(--glass-border);
+  border-radius: var(--r-md);
+  padding: 14px 16px;
+  transition: border-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out);
 }
-
+.inputGroup:focus-within {
+  border-color: var(--cyan-400);
+  box-shadow: 0 0 0 4px rgba(34, 211, 238, 0.14);
+}
 .inputGroup svg {
-  color: var(--red);
+  color: var(--text-3);
+  flex-shrink: 0;
+  font-size: 0.95rem;
 }
-
 .inputGroup input,
 .inputGroup select {
-  border: none;
   background: transparent;
-  padding: 17px 4px;
+  border: none;
+  width: 100%;
+  font-size: 0.94rem;
+  color: var(--text-0);
+}
+.inputGroup input::placeholder {
+  color: var(--text-3);
+}
+.inputGroup input:focus,
+.inputGroup select:focus {
+  outline: none;
+}
+.inputGroup select option {
+  background: var(--bg-2);
+  color: var(--text-0);
+}
+
+/* bare selects used directly on search panels */
+select {
+  background: var(--bg-2);
+  border: 1.5px solid var(--glass-border);
+  border-radius: var(--r-md);
+  padding: 14px 16px;
+  font-size: 0.94rem;
+  color: var(--text-0);
+}
+select:focus {
+  border-color: var(--cyan-400);
+  outline: none;
+}
+select option {
+  background: var(--bg-2);
+}
+
+.fieldHint {
+  font-size: 0.76rem;
+  color: var(--text-3);
+  margin-top: 6px;
+  padding-left: 4px;
+}
+
+.formMessage {
+  margin-top: 18px;
+  padding: 13px 16px;
+  border-radius: var(--r-md);
+  font-size: 0.88rem;
+  font-weight: 500;
+  text-align: center;
+}
+.formMessage.success {
+  background: rgba(34, 197, 94, 0.12);
+  color: var(--success);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+.formMessage.error {
+  background: rgba(239, 68, 68, 0.12);
+  color: var(--danger);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+.formMessage.warning {
+  background: rgba(245, 158, 11, 0.12);
+  color: var(--warning);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.eligibilityBox {
+  padding: 14px 18px;
+  border-radius: var(--r-md);
+  font-size: 0.88rem;
+  font-weight: 600;
+  margin-bottom: 22px;
+}
+.eligibilityBox.eligible {
+  background: rgba(34, 197, 94, 0.12);
+  color: var(--success);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+.eligibilityBox.notEligible {
+  background: rgba(239, 68, 68, 0.12);
+  color: var(--danger);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.85rem;
+  color: var(--text-2);
+  line-height: 1.5;
+}
+.consent input {
+  margin-top: 3px;
+  accent-color: var(--red-600);
+  width: 16px;
+  height: 16px;
 }
 
 .fullWidth {
   grid-column: 1 / -1;
 }
 
-.consent {
-  display: flex;
-  gap: 10px;
-  text-align: left;
-  color: #444;
-  font-weight: 700;
-  align-items: flex-start;
+.locationStatus {
+  font-size: 0.82rem;
+  color: var(--cyan-400);
+  padding-left: 4px;
 }
 
-.consent input {
-  margin-top: 4px;
-}
+/* ==========================================================================
+   AUTH (Login)
+   ========================================================================== */
 
-.donorFormCard button {
-  width: 100%;
-  margin-top: 20px;
-  padding: 17px;
-  font-size: 16px;
-}
-
-.formMessage {
-  margin-top: 16px;
-  text-align: center;
-  font-weight: 900;
-  padding: 14px;
-  border-radius: 14px;
-}
-
-.formMessage.success {
-  background: #e9fff2;
-  color: #0f8a3b;
-}
-
-.formMessage.error {
-  background: #fff1f3;
-  color: #e7192d;
-}
-
-
-.eligibilityBox {
-  padding: 14px;
-  border-radius: 14px;
-  font-weight: 900;
-  text-align: center;
-}
-
-.eligibilityBox.eligible {
-  background: #e9fff2;
-  color: #0f8a3b;
-}
-
-.eligibilityBox.notEligible {
-  background: #fff1f3;
-  color: #e7192d;
-}
-
-
-.fieldHint {
-  margin-top: 7px;
-  margin-left: 12px;
-  font-size: 12px;
-  color: #777;
-  font-weight: 600;
-}
-
-.formMessage.warning {
-  background: #fff8e1;
-  color: #b77900;
-}
-
-.inputGroup select:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
-}
-
-/* =========================================================
-   14. HOSPITAL PAGE
-   Info:
-   - Hospital cards and contact button
-========================================================= */
-
-.hospitalBigCard button {
-  margin-top: 18px;
-}
-
-
-/* =========================================================
-   15. CTA SECTION
-   Info:
-   - Final call to action before footer
-========================================================= */
-
-.cta {
-  width: 86%;
-  margin: 80px auto;
-  padding: 80px 30px;
-  text-align: center;
-  border-radius: 38px;
-  color: white;
-  background:
-    linear-gradient(135deg, rgba(231, 25, 45, 0.94), rgba(255, 77, 96, 0.92)),
-    url("https://images.unsplash.com/photo-1584515933487-779824d29309?q=80&w=1600&auto=format&fit=crop");
-  background-size: cover;
-  background-position: center;
-  box-shadow: 0 25px 70px rgba(231, 25, 45, 0.25);
-}
-
-.cta h2 {
-  font-size: clamp(34px, 5vw, 56px);
-}
-
-.cta p {
-  margin: 16px auto 28px;
-  max-width: 700px;
-  font-size: 20px;
-}
-
-.cta button {
-  background: white;
-  color: var(--red);
-  border: none;
-  padding: 16px 30px;
-  border-radius: 16px;
-  font-weight: 900;
-}
-
-
-/* =========================================================
-   16. FOOTER
-   Info:
-   - Website footer
-   - Quick links and contact info
-========================================================= */
-
-.footer {
-  background: #101010;
-  color: white;
-  padding: 60px 7% 25px;
-}
-
-.footerGrid {
+.authPage {
+  min-height: calc(100vh - var(--nav-h));
   display: grid;
-  grid-template-columns: 1.5fr 1fr 1.2fr;
-  gap: 35px;
+  place-items: center;
+  padding: 60px 24px;
+  position: relative;
+}
+.authPage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--grad-radial-glow);
+  z-index: -1;
 }
 
-.footer h3 {
-  color: white;
-  font-size: 28px;
+.authCard {
+  width: 100%;
+  max-width: 440px;
+  background: var(--bg-2);
+  border: 1px solid var(--glass-border-strong);
+  border-radius: var(--r-xl);
+  padding: 44px 38px;
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+}
+
+.authLogo {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 20px;
+  border-radius: var(--r-lg);
+  display: grid;
+  place-items: center;
+  background: var(--grad-primary);
+  color: #fff;
+  font-size: 1.6rem;
+  box-shadow: var(--shadow-glow-red);
+}
+
+.authCard h1 {
+  font-size: 1.5rem;
+  margin-bottom: 8px;
+}
+.authCard > p {
+  color: var(--text-2);
+  font-size: 0.9rem;
+  margin-bottom: 28px;
+}
+
+.authCard form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.authCard .secondaryBtn {
+  width: 100%;
+}
+
+/* ==========================================================================
+   DONOR REGISTRATION
+   ========================================================================== */
+
+.donorPage {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 56px 24px 100px;
+}
+
+.donorWrapper {
+  display: grid;
+  grid-template-columns: 0.85fr 1.3fr;
+  gap: 40px;
+  align-items: start;
+}
+
+.donorLeft {
+  position: sticky;
+  top: calc(var(--nav-h) + 30px);
+  background: linear-gradient(160deg, var(--red-700), var(--violet-600));
+  border-radius: var(--r-xl);
+  padding: 42px 32px;
+  color: #fff;
+}
+.donorLeft h1 {
+  color: #fff;
+  font-size: clamp(1.6rem, 3vw, 2.1rem);
+  margin-bottom: 14px;
+}
+.donorLeft > p {
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 26px;
+}
+
+.donorPoints {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.donorPoints p {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.donorFormCard {
+  background: var(--bg-2);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-xl);
+  padding: 40px;
+}
+.donorFormCard h2 {
+  font-size: 1.4rem;
+  margin-bottom: 6px;
+}
+.donorFormCard > p {
+  color: var(--text-3);
+  margin-bottom: 22px;
+  font-size: 0.9rem;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.donorFormCard form > button[type="submit"] {
+  width: 100%;
+}
+
+@media (max-width: 980px) {
+  .donorWrapper { grid-template-columns: 1fr; }
+  .donorLeft { position: static; }
+}
+@media (max-width: 620px) {
+  .formGrid { grid-template-columns: 1fr; }
+  .donorFormCard { padding: 28px 22px; }
+}
+
+/* ==========================================================================
+   BLOOD SEARCH
+   ========================================================================== */
+
+.searchTabs {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.searchTabs button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: var(--r-pill);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  color: var(--text-2);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+.searchTabs button:hover {
+  border-color: var(--glass-border-strong);
+  color: var(--text-0);
+}
+.searchTabs button.activeTab {
+  background: var(--grad-primary);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: var(--shadow-glow-red);
+}
+
+.searchPanel,
+.manualSearchPanel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-lg);
+  padding: 26px;
+  max-width: 720px;
+  margin: 0 auto 40px;
+}
+
+.searchPanel select,
+.manualSearchPanel select {
+  min-width: 200px;
+  flex: 1;
+}
+
+.donorGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+
+.donorCard {
+  background: var(--bg-2);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-lg);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: transform var(--dur-med) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+}
+.donorCard:hover {
+  border-color: var(--glass-border-strong);
+  box-shadow: var(--shadow-md);
+}
+
+.donorTop {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.avatar {
+  width: 46px;
+  height: 46px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--grad-accent);
+  color: #04111a;
+  font-weight: 700;
+  font-family: var(--font-display);
+}
+
+.donorTop h3 {
+  font-size: 1.02rem;
+  margin-bottom: 3px;
+}
+.donorTop p {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-3);
+  font-size: 0.8rem;
+}
+
+.groupBadge {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: var(--r-pill);
+  background: rgba(225, 29, 72, 0.14);
+  color: var(--red-500);
+  font-weight: 700;
+  font-size: 0.82rem;
+  white-space: nowrap;
+}
+
+.donorMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px 0;
+  border-top: 1px solid var(--glass-border);
+  border-bottom: 1px solid var(--glass-border);
+  font-size: 0.82rem;
+  color: var(--text-2);
+}
+
+.donorActions {
   display: flex;
   gap: 10px;
+}
+.donorActions a {
+  flex: 1;
+}
+.donorActions button {
+  width: 100%;
+  padding: 11px;
+  border-radius: var(--r-pill);
+  font-weight: 600;
+  font-size: 0.85rem;
+  display: flex;
   align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--glass-bg-strong);
+  border: 1px solid var(--glass-border-strong);
+  color: var(--text-0);
+}
+.donorActions button:hover {
+  border-color: var(--cyan-400);
+  color: var(--cyan-400);
+}
+.donorActions .whatsappBtn {
+  background: rgba(34, 197, 94, 0.14);
+  border-color: rgba(34, 197, 94, 0.3);
+  color: var(--success);
+}
+.donorActions .whatsappBtn:hover {
+  border-color: var(--success);
+  background: rgba(34, 197, 94, 0.22);
 }
 
-.footer h4 {
-  margin-bottom: 15px;
+@media (max-width: 980px) {
+  .donorGrid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 620px) {
+  .donorGrid { grid-template-columns: 1fr; }
+  .searchPanel, .manualSearchPanel { flex-direction: column; align-items: stretch; }
+  .searchPanel select, .manualSearchPanel select { width: 100%; }
 }
 
-.footer p,
-.footer a {
-  color: #cfcfcf;
-  display: block;
-  margin: 10px 0;
-  line-height: 1.6;
+/* ==========================================================================
+   HOSPITALS
+   ========================================================================== */
+
+.hospitalBigCard {
+  display: flex;
+  flex-direction: column;
 }
 
-.footer a:hover {
-  color: white;
-}
+/* ==========================================================================
+   PURPOSE (currently unused in Home, kept for parity)
+   ========================================================================== */
 
-.footerBottom {
-  border-top: 1px solid #2b2b2b;
-  margin-top: 35px;
-  padding-top: 22px;
-  color: #aaa;
+.purposeSection {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 70px 24px;
   text-align: center;
 }
-
-
-/* =========================================================
-   17. RESPONSIVE DESIGN
-   Info:
-   - Tablet and mobile layout
-========================================================= */
-
-@media (min-width: 951px) {
-  .mobileSidebar,
-  .overlay {
-    display: none;
-  }
+.purposeSection h2 {
+  font-size: clamp(1.7rem, 3.2vw, 2.4rem);
+  margin-bottom: 20px;
 }
-
-@media (max-width: 1050px) {
-  .hero,
-  .donorWrapper {
-    grid-template-columns: 1fr;
-  }
-
-  .hero {
-    text-align: center;
-  }
-
-  .hero p {
-    margin: auto;
-  }
-
-  .heroBtns,
-  .trustRow {
-    justify-content: center;
-  }
-
-  .stats,
-  .cardGrid,
-  .requestGrid,
-  .donorGrid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .searchPanel {
-    grid-template-columns: 1fr 1fr;
-  }
+.purposeSection p {
+  color: var(--text-2);
+  max-width: 60ch;
+  margin: 0 auto 14px;
 }
-
-@media (max-width: 950px) {
-  .navbar {
-    height: 82px;
-    padding: 0 5%;
-  }
-
-  .desktopMenu,
-  .desktopBtn {
-    display: none;
-  }
-
-  .menuBtn {
-    display: block;
-  }
-
-  .hero {
-    padding: 125px 5% 65px;
-  }
-
-  .heroVisual {
-    min-height: 420px;
-  }
-
-  .section,
-  .pageShell {
-    padding: 80px 5%;
-  }
-
-  .pageShell {
-    padding-top: 125px;
-  }
-}
-
-@media (max-width: 650px) {
-  .logo {
-    font-size: 21px;
-  }
-
-  .logo small {
-    display: none;
-  }
-
-  .stats,
-  .cardGrid,
-  .requestGrid,
-  .donorGrid,
-  .searchPanel,
-  .formGrid,
-  .footerGrid {
-    grid-template-columns: 1fr;
-  }
-
-  .hero h1 {
-    letter-spacing: -1px;
-  }
-
-  .heroBtns button,
-  .emergencyBtns button {
-    width: 100%;
-  }
-
-  .heroBtns,
-  .emergencyBtns {
-    flex-direction: column;
-  }
-
-  .liveCard {
-    position: static;
-    margin: 10px;
-  }
-
-  .heroVisual {
-    min-height: 360px;
-    padding: 25px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-
-  .heartIcon {
-    font-size: 75px;
-  }
-
-  .groupBadge {
-    position: static;
-    margin-top: 12px;
-  }
-
-  .donorTop {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .donorActions {
-    grid-template-columns: 1fr;
-  }
-
-  .donorLeft,
-  .donorFormCard {
-    padding: 28px;
-  }
-
-  .mobileSidebar {
-    width: 285px;
-  }
+.purposeSection strong {
+  color: var(--cyan-400);
 }
