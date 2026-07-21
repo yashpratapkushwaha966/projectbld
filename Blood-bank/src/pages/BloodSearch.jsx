@@ -196,8 +196,7 @@ function BloodSearch() {
         <span className="badge">Find Donor</span>
         <h1>Search Blood Donors</h1>
         <p>
-          Search nearby donors using GPS or manually find donors by State, City
-          and Blood Group.
+          Quickly connect with nearby blood donors using your location or search by State, City, and Blood Group.
         </p>
       </div>
 
@@ -215,6 +214,7 @@ function BloodSearch() {
         >
           <FaCity /> Manual Search
         </button>
+         
       </div>
 
       {searchMode === "nearby" && (
