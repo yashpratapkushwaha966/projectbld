@@ -11,6 +11,7 @@ import {
   FaCheckCircle,
   FaCalendarAlt,
   FaLocationArrow,
+  FaHashtag,
 } from "react-icons/fa";
 
 function RegisterDonor() {
@@ -24,7 +25,8 @@ function RegisterDonor() {
     bloodGroup: "",
     state: "",
     city: "",
-    area: "Current Location",
+    area: "",
+    pincode: "",
     dob: "",
     age: "",
     gender: "",
@@ -43,6 +45,8 @@ function RegisterDonor() {
   const [formData, setFormData] = useState(initialFormData);
   const [loading, setLoading] = useState(false);
   const [locationStatus, setLocationStatus] = useState("");
+  const [locationFetched, setLocationFetched] = useState(false);
+  const [locationMode, setLocationMode] = useState("current"); // "current" | "manual"
   const [formMessage, setFormMessage] = useState("");
   const [messageType, setMessageType] = useState("");
 
@@ -139,6 +143,8 @@ function RegisterDonor() {
       (position) => {
         setFormData((prev) => ({
           ...prev,
+          area: "Current Location",
+          pincode: "",
           location: {
             type: "Point",
             coordinates: [
@@ -148,14 +154,38 @@ function RegisterDonor() {
           },
         }));
 
+        setLocationFetched(true);
         setLocationStatus("Location added successfully ✅");
       },
       () => {
+        setLocationFetched(false);
         setLocationStatus("Location permission denied ❌");
         setMessageType("error");
-        setFormMessage("Please allow location permission.");
+        setFormMessage(
+          "Please allow location permission, or fill your Area and Pincode manually below."
+        );
       }
     );
+  };
+
+  const handleLocationModeChange = (mode) => {
+    setLocationMode(mode);
+    setFormMessage("");
+
+    if (mode === "manual") {
+      setLocationFetched(false);
+      setLocationStatus("");
+      setFormData((prev) => ({
+        ...prev,
+        location: { type: "Point", coordinates: [0, 0] },
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        area: "",
+        pincode: "",
+      }));
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -173,8 +203,32 @@ function RegisterDonor() {
       return;
     }
 
+    if (locationMode === "current") {
+      if (!locationFetched) {
+        setMessageType("error");
+        setFormMessage(
+          "Please tap 'Fetch Current Location' first, or switch to manual address entry."
+        );
+        return;
+      }
+    } else {
+      if (!formData.area.trim() || !formData.pincode.trim()) {
+        setMessageType("error");
+        setFormMessage("Please fill your Area and Pincode.");
+        return;
+      }
+
+      if (!/^\d{6}$/.test(formData.pincode.trim())) {
+        setMessageType("error");
+        setFormMessage("Please enter a valid 6 digit Pincode.");
+        return;
+      }
+    }
+
     const payload = {
       ...formData,
+      area: locationMode === "current" ? "Current Location" : formData.area.trim(),
+      pincode: locationMode === "manual" ? formData.pincode.trim() : "",
       whatsapp: formData.mobile,
       emergencyAvailable: formData.isEligible
         ? formData.emergencyAvailable
@@ -198,6 +252,8 @@ function RegisterDonor() {
 
       setFormData(initialFormData);
       setLocationStatus("");
+      setLocationFetched(false);
+      setLocationMode("current");
     } catch (error) {
       const msg =
         error.response?.data?.message ||
@@ -434,17 +490,66 @@ function RegisterDonor() {
                 </select>
               </div>
 
-              <button
-                type="button"
-                className="locationBtn fullWidth"
-                onClick={getCurrentLocation}
-              >
-                <FaLocationArrow /> Use Current Location
-              </button>
+              <div className="locationModeBox fullWidth">
+                <div className="searchTabs locationModeTabs">
+                  <button
+                    type="button"
+                    className={locationMode === "current" ? "activeTab" : ""}
+                    onClick={() => handleLocationModeChange("current")}
+                  >
+                    <FaLocationArrow /> Use Current Location
+                  </button>
+                  <button
+                    type="button"
+                    className={locationMode === "manual" ? "activeTab" : ""}
+                    onClick={() => handleLocationModeChange("manual")}
+                  >
+                    <FaMapMarkerAlt /> Enter Address Manually
+                  </button>
+                </div>
 
-              {locationStatus && (
-                <p className="locationStatus fullWidth">{locationStatus}</p>
-              )}
+                {locationMode === "current" ? (
+                  <>
+                    <button
+                      type="button"
+                      className="locationBtnSmall"
+                      onClick={getCurrentLocation}
+                    >
+                      <FaLocationArrow /> Fetch Current Location
+                    </button>
+
+                    {locationStatus && (
+                      <p className="locationStatus">{locationStatus}</p>
+                    )}
+                  </>
+                ) : (
+                  <div className="manualAddressGrid">
+                    <div className="inputGroup">
+                      <FaMapMarkerAlt />
+                      <input
+                        name="area"
+                        value={formData.area}
+                        onChange={handleChange}
+                        placeholder="Area / Locality"
+                        required
+                      />
+                    </div>
+
+                    <div className="inputGroup">
+                      <FaHashtag />
+                      <input
+                        name="pincode"
+                        value={formData.pincode}
+                        onChange={handleChange}
+                        placeholder="Pincode"
+                        maxLength="6"
+                        inputMode="numeric"
+                        required
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
 
               <label className="consent fullWidth">
                 <input

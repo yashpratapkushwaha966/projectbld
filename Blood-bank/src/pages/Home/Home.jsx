@@ -16,7 +16,7 @@ function Home() {
       {/* <Purpose /> */}
       <Stats />
       <HowItWorks />
-      <EmergencyBanner />
+      {/* <EmergencyBanner /> */}
       <RecentRequests />
       <HospitalPreview />
       <SuccessStories />

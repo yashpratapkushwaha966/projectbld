@@ -11,6 +11,12 @@ function Navbar() {
   const menuRef = useRef(null);
 
   const handleLogout = () => {
+    const confirmLogout = window.confirm(
+      "You are about to logout. Do you want to continue?"
+    );
+
+    if (!confirmLogout) return;
+
     logout();
     closeMenu();
     setMenuOpen(false);
@@ -58,10 +64,8 @@ function Navbar() {
           <li><NavLink to="/blood-search">Find Donor</NavLink></li>
           <li><NavLink to="/hospitals">Hospitals</NavLink></li>
           <li><NavLink to="/register-donor">Become Donor</NavLink></li>
-          {isLoggedIn ? (
-            <li><button className="navLogout" onClick={handleLogout}>Logout</button></li>
-          ) : (
-            <li><NavLink to="/login">Login</NavLink></li>
+          {!isLoggedIn && (
+            <li><NavLink to="/login" className="navLoginBtn">Login</NavLink></li>
           )}
         </ul>
 
@@ -86,13 +90,12 @@ function Navbar() {
                 </div>
               </div>
               <button className="dropdownItem" role="menuitem" disabled title="Coming soon"><FaUserCircle /> My Profile</button>
-              <Link to="/blood-search" role="menuitem" onClick={() => setMenuOpen(false)}><FaTachometerAlt /> Dashboard</Link>
+              <Link to="/" role="menuitem" onClick={() => setMenuOpen(false)}><FaTachometerAlt /> Dashboard</Link>
               <button className="dropdownItem" role="menuitem" disabled title="Coming soon"><FaCog /> Settings</button>
               <button className="dropdownLogout" role="menuitem" onClick={handleLogout}><FaSignOutAlt /> Logout</button>
             </div>
           </div>
         )}
-        <Link to="/blood-search" className="desktopBtn"><button>Emergency Help</button></Link>
         <button className="menuBtn" onClick={() => setOpen(true)} aria-label="Open menu"><FaBars /></button>
       </nav>
 
@@ -112,13 +115,9 @@ function Navbar() {
           {isLoggedIn ? (
             <button className="sidebarBtn logoutSide" onClick={handleLogout}>Logout</button>
           ) : (
-            <Link to="/login" onClick={closeMenu}>Login</Link>
+            <Link to="/login" className="navLoginBtn sidebarLoginBtn" onClick={closeMenu}>Login</Link>
           )}
         </div>
-
-        <Link to="/blood-search" onClick={closeMenu}>
-          <button className="sidebarBtn">Emergency Help</button>
-        </Link>
       </aside>
     </>
   );

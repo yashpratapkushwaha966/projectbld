@@ -27,7 +27,7 @@ function Hero() {
       <motion.div className="heroVisual" initial={{ opacity: 0, scale: 0.75 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.9 }}>
         <div className="pulseCircle"></div>
         <FaHeartbeat className="heartIcon" />
-        <div className="liveCard top"><b>O+ Donor Found</b><span>MP Nagar, Bhopal</span></div>
+        <div className="liveCard top"><b>O+ Donor Found</b><span>Bhopal</span></div>
         <div className="liveCard bottom"><b>Emergency Request</b><span>2 units needed today</span></div>
       </motion.div>
     </section>

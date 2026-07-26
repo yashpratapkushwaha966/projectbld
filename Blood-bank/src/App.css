@@ -33,8 +33,8 @@
   --warning: #f59e0b;
   --danger: #ef4444;
 
-  --grad-primary: linear-gradient(135deg, var(--red-600) 0%, var(--violet-600) 100%);
-  --grad-primary-hover: linear-gradient(135deg, #ff3866 0%, #7c5cff 100%);
+  --grad-primary: linear-gradient(135deg, #0f9d78 0%, #06b6a4 100%);
+  --grad-primary-hover: linear-gradient(135deg, #e11d48 0%, #be123c 100%);
   --grad-accent: linear-gradient(120deg, var(--cyan-500), var(--violet-500));
   --grad-radial-glow: radial-gradient(circle at top, rgba(225, 29, 72, 0.28), transparent 60%);
 
@@ -58,6 +58,7 @@
   --shadow-md: 0 10px 30px rgba(5, 8, 15, 0.45);
   --shadow-lg: 0 24px 60px rgba(5, 8, 15, 0.55);
   --shadow-glow-red: 0 8px 30px rgba(225, 29, 72, 0.35);
+  --shadow-glow-teal: 0 8px 30px rgba(15, 157, 120, 0.35);
   --shadow-glow-violet: 0 8px 30px rgba(109, 67, 240, 0.3);
 
   /* ---- type ---- */
@@ -240,7 +241,7 @@ button {
   font-size: 0.95rem;
   padding: 14px 28px;
   border-radius: var(--r-pill);
-  box-shadow: var(--shadow-glow-red);
+  box-shadow: var(--shadow-glow-teal);
   display: inline-flex;
   align-items: center;
   gap: 10px;
@@ -353,7 +354,7 @@ button:disabled {
   background: var(--grad-primary);
   color: #fff;
   font-size: 1.15rem;
-  box-shadow: var(--shadow-glow-red);
+  box-shadow: var(--shadow-glow-teal);
 }
 
 .desktopMenu {
@@ -394,6 +395,31 @@ button:disabled {
 .navLogout:hover {
   color: var(--red-500);
   background: rgba(244, 63, 94, 0.1);
+}
+
+.desktopMenu a.navLoginBtn,
+.desktopMenu a.navLoginBtn.active {
+  background: var(--grad-primary);
+  color: #fff;
+  font-weight: 700;
+  box-shadow: var(--shadow-glow-teal);
+}
+.desktopMenu a.navLoginBtn:hover {
+  background: var(--grad-primary-hover);
+  color: #fff;
+  box-shadow: 0 10px 26px rgba(225, 29, 72, 0.4);
+}
+
+.sidebarLoginBtn {
+  background: var(--grad-primary);
+  color: #fff !important;
+  font-weight: 700;
+  text-align: center;
+  padding: 12px 18px;
+  border-radius: var(--r-pill);
+}
+.sidebarLoginBtn:hover {
+  background: var(--grad-primary-hover);
 }
 
 .desktopBtn button {
@@ -616,7 +642,7 @@ button:disabled {
   text-align: center;
   background: var(--grad-primary);
   color: #fff;
-  box-shadow: var(--shadow-glow-red);
+  box-shadow: var(--shadow-glow-teal);
 }
 
 .logoutSide {
@@ -912,7 +938,7 @@ button:disabled {
   color: #fff;
   font-size: 1.2rem;
   margin-bottom: 18px;
-  box-shadow: var(--shadow-glow-red);
+  box-shadow: var(--shadow-glow-teal);
 }
 
 .infoCard h3 {
@@ -1289,6 +1315,17 @@ select option {
   padding-left: 4px;
 }
 
+.linkBtn {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--primary, #d6336c);
+  text-decoration: underline;
+  font-size: 0.76rem;
+  cursor: pointer;
+  font-weight: 600;
+}
+
 .formMessage {
   margin-top: 18px;
   padding: 13px 16px;
@@ -1396,7 +1433,7 @@ select option {
   background: var(--grad-primary);
   color: #fff;
   font-size: 1.6rem;
-  box-shadow: var(--shadow-glow-red);
+  box-shadow: var(--shadow-glow-teal);
 }
 
 .authCard h1 {
@@ -1502,6 +1539,52 @@ select option {
   .donorFormCard { padding: 28px 22px; }
 }
 
+.locationModeBox {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.locationModeTabs {
+  justify-content: flex-start;
+  margin-bottom: 0;
+}
+
+.locationModeTabs button {
+  padding: 9px 18px;
+  font-size: 0.82rem;
+}
+
+.locationBtnSmall {
+  background: var(--grad-accent);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.82rem;
+  padding: 9px 20px;
+  border-radius: var(--r-pill);
+  box-shadow: 0 8px 22px rgba(6, 182, 212, 0.35);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+  width: fit-content;
+}
+.locationBtnSmall:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(6, 182, 212, 0.45);
+}
+
+.manualAddressGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  width: 100%;
+}
+@media (max-width: 480px) {
+  .manualAddressGrid { grid-template-columns: 1fr; }
+}
+
 /* ==========================================================================
    BLOOD SEARCH
    ========================================================================== */
@@ -1534,7 +1617,7 @@ select option {
   background: var(--grad-primary);
   border-color: transparent;
   color: #fff;
-  box-shadow: var(--shadow-glow-red);
+  box-shadow: var(--shadow-glow-teal);
 }
 
 .searchPanel,

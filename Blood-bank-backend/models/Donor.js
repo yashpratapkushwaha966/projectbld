@@ -75,6 +75,12 @@ const donorSchema = new mongoose.Schema(
       trim: true,
     },
 
+    pincode: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+
     // ==========================
     // Donor Details
     // ==========================
