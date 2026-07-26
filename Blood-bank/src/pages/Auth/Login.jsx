@@ -44,8 +44,8 @@ function Login() {
     } catch (error) {
       setMessageType("error");
       setMessage(
-        error.response?.data?.message ||
-          error.response?.data?.error ||
+        error.response?.data?.error ||
+          error.response?.data?.message ||
           "Failed to send OTP."
       );
     } finally {
